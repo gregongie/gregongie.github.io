@@ -1,6 +1,15 @@
 [{
     "title": "A Fast Algorithm for Structured Low-Rank Matrix Recovery with Applications to Undersampled MRI Reconstruction",
     "authors": "<b>G. Ongie</b> &amp; M. Jacob",
+    "venue": "SIAM IS16, Alburquerque, NM",
+    "type": "conference",
+    "year": 2016,
+    "ppt": "ongieSIAMimgsci2016.pptx",
+    "pdf": "ongieSIAMimgsci2016.pdf"    
+},
+{
+    "title": "A Fast Algorithm for Structured Low-Rank Matrix Recovery with Applications to Undersampled MRI Reconstruction",
+    "authors": "<b>G. Ongie</b> &amp; M. Jacob",
     "venue": "ISBI, Prague",
     "type": "conference",
     "year": 2016,
