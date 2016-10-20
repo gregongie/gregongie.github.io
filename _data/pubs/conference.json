@@ -1,4 +1,24 @@
 [{
+    "title": "Structured Low-rank Eecovery of Piecewise Constant Signals with Performance Guarantees",
+    "authors": "<b>G. Ongie</b>, S. Biswas, &amp; M. Jacob",
+    "journal": "ICIP, Phoenix, AZ",
+    "type": "conference",
+    "year": 2016,
+    "url": "",
+    "code": "",
+    "tags": []
+},
+{
+    "title": "Accelerated Dynamic MRI Using Structured Low Rank Matrix Completion",
+    "authors": "A. Balachandrasekaran, <b>G. Ongie</b>, &amp; M. Jacob",
+    "journal": "ICIP, Phoenix, AZ",
+    "type": "conference",
+    "year": 2016,
+    "url": "",
+    "code": "",
+    "tags": []
+},
+{
     "title": "A Fast Algorithm for Structured Low-Rank Matrix Recovery with Applications to Undersampled MRI Reconstruction",
     "authors": "<b>G. Ongie</b> &amp; M. Jacob",
     "journal": "ISBI, Prague",

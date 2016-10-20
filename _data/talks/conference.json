@@ -1,4 +1,13 @@
 [{
+    "title": "Structured Low-rank Eecovery of Piecewise Constant Signals with Performance Guarantees",
+    "authors": "<b>G. Ongie</b>, S. Biswas, &amp; M. Jacob",
+    "venue": "ICIP, Phoenix, AZ",
+    "type": "conference",
+    "year": 2016,
+    "ppt": "",
+    "pdf": ""    
+},
+{
     "title": "A Fast Algorithm for Structured Low-Rank Matrix Recovery with Applications to Undersampled MRI Reconstruction",
     "authors": "<b>G. Ongie</b> &amp; M. Jacob",
     "venue": "SIAM IS16, Alburquerque, NM",

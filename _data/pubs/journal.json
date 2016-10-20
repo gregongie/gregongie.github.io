@@ -1,13 +1,13 @@
 [{
     "title": "Off-the-Grid Recovery of Piecewise Constant Images from Few Fourier Samples",
     "authors": "<b>G. Ongie</b> &amp; M. Jacob",
-    "journal": "SIAM Journal on Imaging Sciences (Accepted, to appear)",
+    "journal": "SIAM Journal on Imaging Sciences",
     "type": "journal",
     "year": 2016,
-    "url": "http://arxiv.org/abs/1510.00384",
+    "url": "http://epubs.siam.org/doi/abs/10.1137/15M1042280?journalCode=sjisbi",
     "code": "",
     "tags": [],
-    "bibtex": "@article{ongie2016offthegrid,\n  title={Off-the-Grid Recovery of Piecewise Constant Images from Few Fourier Samples},\n  author={Ongie, Greg and Jacob, Mathews},\n  journal={arXiv.org preprint},\n  year={2016}\n}"
+    "bibtex": "@article{ongie2016offthegrid,\n  title={Off-the-Grid Recovery of Piecewise Constant Images from Few Fourier Samples},\n  author={Ongie, Greg and Jacob, Mathews},\n  journal={SIAM Journal on Imaging Sciences},\n  volume={9},\n  number={3},\n  pages={1004–1041},\n  year={2016},\n  publisher={SIAM}\n}"
 },
 {
     "title": "Recovery of Discontinuous Signals Using Group Sparse Higher Degree Total Variation",
