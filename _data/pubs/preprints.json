@@ -1,5 +1,15 @@
 [{
-    "title": "GIRAF: A Fast Algorithm for Structured Low-rank Matrix Recovery",
+    "title": "Convex recovery of continuous domain piecewise constant images from non-uniform Fourier samples",
+    "authors": "<b>G. Ongie</b>, S. Biswas, M. Jacob",
+    "journal": "Submitted to IEEE TSP",
+    "type": "journal",
+    "year": 2017,
+    "url": "https://arxiv.org/pdf/1703.01405.pdf",
+    "code": "",
+    "tags": []
+},
+{
+    "title": "A Fast Algorithm for Convolutional Structured Low-rank Matrix Recovery",
     "authors": "<b>G. Ongie</b> &amp; M. Jacob",
     "journal": "Submitted to IEEE TCI",
     "type": "journal",
