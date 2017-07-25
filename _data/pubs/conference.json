@@ -1,4 +1,15 @@
-[{
+[
+{
+    "title": "Efficient Computation of Regularized Field Map Estimates in 3D",
+    "authors": "<b>G. Ongie</b>, J. Shi, &amp; J. Fessler",
+    "journal": "ISBI, Melbourne, Australia",
+    "type": "conference",
+    "year": 2017,
+    "url": "",
+    "code": "",
+    "tags": []
+},
+{
     "title": "Structured Low-rank Recovery of Piecewise Constant Signals with Performance Guarantees",
     "authors": "<b>G. Ongie</b>, S. Biswas, &amp; M. Jacob",
     "journal": "ICIP, Phoenix, AZ",
