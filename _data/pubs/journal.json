@@ -1,4 +1,25 @@
-[{
+[
+{
+    "title": "Convex Recovery of Continuous Domain Piecewise Constant Images from Non-Uniform Fourier samples",
+    "authors": "<b>G. Ongie</b>, S. Biswas, M. Jacob",
+    "journal": "IEEE Transactions on Signal Processing",
+    "type": "journal",
+    "year": 2017,
+    "url": "https://arxiv.org/abs/1703.01405",
+    "code": "",
+    "tags": []
+},
+{
+    "title": "A Fast Algorithm for Convolutional Structured Low-rank Matrix Recovery",
+    "authors": "<b>G. Ongie</b> &amp; M. Jacob",
+    "journal": "IEEE Transactions on Computational Imaging",
+    "type": "journal",
+    "year": 2017,
+    "url": "https://arxiv.org/abs/1609.07429",
+    "code": "",
+    "tags": []
+},
+{
     "title": "Off-the-Grid Recovery of Piecewise Constant Images from Few Fourier Samples",
     "authors": "<b>G. Ongie</b> &amp; M. Jacob",
     "journal": "SIAM Journal on Imaging Sciences",

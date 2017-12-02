@@ -1,8 +1,43 @@
 [
 {
+    "title": "Enhanced Online Subspace Estimation via Adaptive Sensing",
+    "authors": "<b>G. Ongie</b>, D. Hong, D. Zhang, L. Balzano",
+    "journal": "Asilomar",
+    "type": "conference",
+    "year": 2017,
+    "tags": []
+},
+{
+    "title": "Low Algebraic Dimension Matrix Completion",
+    "authors": "D. Pimentel, <b>G. Ongie</b>, L. Balzano, R. Willett, R. Nowak",
+    "journal": "Allerton",
+    "type": "conference",
+    "year": 2017,
+    "url": "https://danielpimentel.github.io/papers/LADMC.pdf",
+    "tags": []
+},
+{
+    "title": "Online Dynamic MRI Reconstruction via Robust Subspace Tracking",
+    "authors": "<b>G. Ongie</b>, S. Dewangan, J. Fessler, L. Balzano.",
+    "journal": "GlobalSIP",
+    "type": "conference",
+    "year": 2017,
+    "tags": []
+},
+{
+    "title": "Algebraic Variety Models for High-Rank Matrix Completion",
+    "authors": "<b>G. Ongie</b>, R. Willett, R. Nowak, L. Balzano",
+    "journal": "ICML",
+    "type": "conference",
+    "year": 2017,
+    "url": "http://proceedings.mlr.press/v70/ongie17a.html",
+    "code": "https://github.com/gregongie/vmc",
+    "tags": []
+},
+{
     "title": "Efficient Computation of Regularized Field Map Estimates in 3D",
     "authors": "<b>G. Ongie</b>, J. Shi, &amp; J. Fessler",
-    "journal": "ISBI, Melbourne, Australia",
+    "journal": "ISBI",
     "type": "conference",
     "year": 2017,
     "url": "",
@@ -12,7 +47,7 @@
 {
     "title": "Structured Low-rank Recovery of Piecewise Constant Signals with Performance Guarantees",
     "authors": "<b>G. Ongie</b>, S. Biswas, &amp; M. Jacob",
-    "journal": "ICIP, Phoenix, AZ",
+    "journal": "ICIP",
     "type": "conference",
     "year": 2016,
     "url": "",
@@ -22,7 +57,7 @@
 {
     "title": "Accelerated Dynamic MRI Using Structured Low Rank Matrix Completion",
     "authors": "A. Balachandrasekaran, <b>G. Ongie</b>, &amp; M. Jacob",
-    "journal": "ICIP, Phoenix, AZ",
+    "journal": "ICIP",
     "type": "conference",
     "year": 2016,
     "url": "",
@@ -32,7 +67,7 @@
 {
     "title": "A Fast Algorithm for Structured Low-Rank Matrix Recovery with Applications to Undersampled MRI Reconstruction",
     "authors": "<b>G. Ongie</b> &amp; M. Jacob",
-    "journal": "ISBI, Prague",
+    "journal": "ISBI",
     "type": "conference",
     "year": 2016,
     "url": "",
@@ -42,7 +77,7 @@
 {
     "title": "Recovery of Piecewise Smooth Images from Few Fourier Samples",
     "authors": "<b>G. Ongie</b> &amp; M. Jacob",
-    "journal": "SampTA, Washington D.C",
+    "journal": "SampTA",
     "type": "conference",
     "year": 2015,
     "url": "",
@@ -52,7 +87,7 @@
 {
     "title": "Super-resolution MRI Using Finite Rate of Innovation Curves",
     "authors": "<b>G. Ongie</b> &amp; M. Jacob",
-    "journal": "ISBI, New York",
+    "journal": "ISBI",
     "type": "conference",
     "year": 2015,
     "url": "",
@@ -62,7 +97,7 @@
 {
     "title": "Higher Degree Total Variation for 3-D Image Recovery",
     "authors": "<b>G. Ongie</b>, Y. Hu, M. Jacob",
-    "journal": "ISBI, Beijing",
+    "journal": "ISBI",
     "type": "conference",
     "year": 2014,
     "url": "",
@@ -72,7 +107,7 @@
 {
     "title": "Accelerated MRI Using Iterative Non-local Shrinkage",
     "authors": "Y. Moshin, <b>G. Ongie</b>, M. Jacob",
-    "journal": "EMBC, Chicago",
+    "journal": "EMBC",
     "type": "conference",
     "year": 2014,
     "url": "",

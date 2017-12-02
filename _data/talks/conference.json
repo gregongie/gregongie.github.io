@@ -1,5 +1,33 @@
-[{
-    "title": "Structured Low-rank Eecovery of Piecewise Constant Signals with Performance Guarantees",
+[
+{
+    "title": "Online Dynamic MRI Reconstruction via Robust Subspace Tracking",
+    "authors": "<b>G. Ongie</b>, S. Dewangan, L. Balzano, J. Fessler",
+    "venue": "GlobalSIP, Montreal, Canada",
+    "type": "conference",
+    "year": 2017,
+    "ppt": "",
+    "pdf": ""    
+},
+{
+    "title": "Enhanced Online Subspace Estimation via Adaptive Sensing",
+    "authors": "<b>G. Ongie</b>, D. Hong, D. Zhang, L. Balzano",
+    "venue": "Asilomar, Pacific Grove, CA",
+    "type": "conference",
+    "year": 2017,
+    "ppt": "",
+    "pdf": ""    
+},
+{
+    "title": "Algebraic Variety Models for High-Rank Matrix Completion",
+    "authors": "<b>G. Ongie</b>, R. Willett, L. Balzano, R. Nowak",
+    "venue": "ICML, Sydney, Austrailia",
+    "type": "conference",
+    "year": 2017,
+    "ppt": "",
+    "pdf": ""    
+},
+{
+    "title": "Structured Low-rank Recovery of Piecewise Constant Signals with Performance Guarantees",
     "authors": "<b>G. Ongie</b>, S. Biswas, &amp; M. Jacob",
     "venue": "ICIP, Phoenix, AZ",
     "type": "conference",
@@ -10,7 +38,7 @@
 {
     "title": "A Fast Algorithm for Structured Low-Rank Matrix Recovery with Applications to Undersampled MRI Reconstruction",
     "authors": "<b>G. Ongie</b> &amp; M. Jacob",
-    "venue": "SIAM IS16, Alburquerque, NM",
+    "venue": "SIAM IS16, Albuquerque, NM",
     "type": "conference",
     "year": 2016,
     "ppt": "ongieSIAMimgsci2016.pptx",
