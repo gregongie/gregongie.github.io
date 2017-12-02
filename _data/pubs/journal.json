@@ -5,7 +5,7 @@
     "journal": "IEEE Transactions on Signal Processing",
     "type": "journal",
     "year": 2017,
-    "url": "https://arxiv.org/abs/1703.01405",
+    "url": "http://ieeexplore.ieee.org/document/8027083/",
     "code": "",
     "tags": []
 },
@@ -15,7 +15,7 @@
     "journal": "IEEE Transactions on Computational Imaging",
     "type": "journal",
     "year": 2017,
-    "url": "https://arxiv.org/abs/1609.07429",
+    "url": "http://ieeexplore.ieee.org.proxy.lib.umich.edu/abstract/document/7964698/",
     "code": "",
     "tags": []
 },
@@ -36,7 +36,7 @@
     "journal": "IEEE Signal Processing Letters",
     "type": "journal",
     "year": 2015,
-    "url": "http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=7050343",
+    "url": "http://ieeexplore.ieee.org/abstract/document/7050343/",
     "code": "",
     "tags": [],
     "bibtex": "@article{ongie2015recovery,\n  title={Recovery of Discontinuous Signals Using Group Sparse Higher Degree Total Variation},\n  author={Ongie, Greg and Jacob, Mathews},\n  journal={Signal Processing Letters, IEEE},\n  volume={22},\n  number={9},\n  pages={1414--1418},\n  year={2015},\n  publisher={IEEE}\n}"
@@ -47,7 +47,7 @@
     "journal": "IEEE Transactions on Medical Imaging",
     "type": "journal",
     "year": 2014,
-    "url": "",
+    "url": "http://ieeexplore.ieee.org/abstract/document/7027820/",
     "code": "",
     "tags": []
 },
@@ -57,7 +57,7 @@
     "journal": "IEEE Transactions on Image Processing",
     "type": "journal",
     "year": 2014,
-    "url": "",
+    "url": "http://ieeexplore.ieee.org/abstract/document/6781649/",
     "code": "",
     "tags": []
 }]

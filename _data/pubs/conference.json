@@ -5,7 +5,8 @@
     "journal": "Asilomar",
     "type": "conference",
     "year": 2017,
-    "tags": []
+    "tags": [],
+    "url": "https://gregongie.github.io/files/papers/adaptiveGROUSE.pdf"
 },
 {
     "title": "Low Algebraic Dimension Matrix Completion",
@@ -22,7 +23,8 @@
     "journal": "GlobalSIP",
     "type": "conference",
     "year": 2017,
-    "tags": []
+    "tags": [],
+    "url": "https://gregongie.github.io/files/papers/onlineMRI.pdf"
 },
 {
     "title": "Algebraic Variety Models for High-Rank Matrix Completion",
@@ -40,7 +42,7 @@
     "journal": "ISBI",
     "type": "conference",
     "year": 2017,
-    "url": "",
+    "url": "http://ieeexplore.ieee.org/abstract/document/7950616/",
     "code": "",
     "tags": []
 },
@@ -50,7 +52,7 @@
     "journal": "ICIP",
     "type": "conference",
     "year": 2016,
-    "url": "",
+    "url": "http://ieeexplore.ieee.org/abstract/document/7532500/",
     "code": "",
     "tags": []
 },
@@ -60,7 +62,7 @@
     "journal": "ICIP",
     "type": "conference",
     "year": 2016,
-    "url": "",
+    "url": "http://ieeexplore.ieee.org/abstract/document/7532680/",
     "code": "",
     "tags": []
 },
@@ -70,7 +72,7 @@
     "journal": "ISBI",
     "type": "conference",
     "year": 2016,
-    "url": "",
+    "url": "http://ieeexplore.ieee.org/abstract/document/7493322/",
     "code": "",
     "tags": []
 },
@@ -80,7 +82,7 @@
     "journal": "SampTA",
     "type": "conference",
     "year": 2015,
-    "url": "",
+    "url": "http://ieeexplore.ieee.org/abstract/document/7148950/",
     "code": "",
     "tags": []
 },
@@ -90,7 +92,7 @@
     "journal": "ISBI",
     "type": "conference",
     "year": 2015,
-    "url": "",
+    "url": "http://ieeexplore.ieee.org/abstract/document/7164100/",
     "code": "",
     "tags": ["Best student paper award winner"]
 },
@@ -100,7 +102,7 @@
     "journal": "ISBI",
     "type": "conference",
     "year": 2014,
-    "url": "",
+    "url": "http://ieeexplore.ieee.org/abstract/document/6868042/",
     "code": "",
     "tags": []
 },
@@ -110,7 +112,7 @@
     "journal": "EMBC",
     "type": "conference",
     "year": 2014,
-    "url": "",
+    "url": "http://ieeexplore.ieee.org/abstract/document/6943897/",
     "code": "",
     "tags": []
 }]
