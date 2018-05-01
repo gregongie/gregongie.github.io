@@ -1,12 +1,10 @@
 [
 {
-    "title": "Algebraic Variety Models for High-Rank Matrix Completion",
-    "authors": "<b>G. Ongie</b>, R. Willett, R. Nowak, L. Balzano",
-    "journal": "Accepted to ICML",
-    "type": "conference",
+    "title": "Tensor Methods for Nonlinear Matrix Completion",
+    "authors": "<b>G. Ongie</b>, L. Balzano, D. Pimentel, R. Willett, R. Nowak",
+    "type": "journal",
     "year": 2017,
-    "url": "https://arxiv.org/abs/1703.09631",
-    "code": "https://github.com/gregongie/vmc",
+    "url": "https://arxiv.org/abs/1804.10266",
     "tags": []
 }
 ]
