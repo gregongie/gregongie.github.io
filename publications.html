@@ -15,10 +15,7 @@ layout: default
     <b>{{ member.title }}</b>.
     </a>
   </br>
-    {{member.authors}}. {{member.journal}}. {{member.year}}.
-    {% if member.bibtex %}
-    <a href="#" class="biblink" data-bib="{{member.bibtex | escape}}">(bib)</a>
-    {% endif %}
+    {{member.authors}}. {{member.year}}.
     {% if member.pdf %}
     <a href="{{member.pdf}}">(pdf)</a>
     {% endif %}    
