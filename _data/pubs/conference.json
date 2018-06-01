@@ -1,4 +1,12 @@
 [
+{   "title": "A Memory-efficient Algorithm for Large-scale Sparsity Regularized Image Reconstruction",
+    "authors": "<b>G. Ongie</b>, N. Murthy, L. Balzano, J. Fessler",
+    "journal": "Fifth International Conference on 
+Image Formation in X-Ray Computed Tomography",
+    "year": 2018,
+    "tags": [],
+    "url": "https://gregongie.github.io/files/papers/ctmeet2018.pdf"
+},
 {
     "title": "Enhanced Online Subspace Estimation via Adaptive Sensing",
     "authors": "<b>G. Ongie</b>, D. Hong, D. Zhang, L. Balzano",
