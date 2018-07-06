@@ -1,4 +1,12 @@
-[
+[{
+    "title": "Online Estimation of Coherent Subspaces with Adaptive Sampling",
+    "authors": "<b>G. Ongie</b>, D. Hong, D. Zhang, L. Balzano",
+    "journal": "SSP Workshop",
+    "type": "conference",
+    "year": 2018,
+    "tags": [],
+    "url": "https://gregongie.github.io/files/papers/ssp2018.pdf"
+},
 {   "title": "A Memory-efficient Algorithm for Large-scale Sparsity Regularized Image Reconstruction",
     "authors": "<b>G. Ongie</b>, N. Murthy, L. Balzano, J. Fessler",
     "journal": "Fifth International Conference on 
