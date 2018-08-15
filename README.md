@@ -1,2 +1,2 @@
 # gregongie.github.io
-Personal web site of Greg Ongie, PhD Candidate in Applied Mathematics at University of Iowa.
+Personal web site of Greg Ongie, Postdoctoral Researcher at University of Chicago
