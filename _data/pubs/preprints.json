@@ -1,5 +1,12 @@
 [
 {
+	"title": "Neumann Networks for Inverse Problems in Imaging",
+    "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
+    "year": 2019,
+    "url": "https://gregongie.github.io/files/papers/neumann_networks.pdf",
+    "tags": []
+},
+{
     "title": "Tensor Methods for Nonlinear Matrix Completion",
     "authors": "<b>G. Ongie</b>, L. Balzano, D. Pimentel, R. Willett, R. Nowak",
     "year": 2018,
