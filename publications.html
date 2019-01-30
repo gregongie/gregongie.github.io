@@ -18,7 +18,10 @@ layout: default
     {{member.authors}}. {{member.year}}.
     {% if member.pdf %}
     <a href="{{member.pdf}}">(pdf)</a>
-    {% endif %}    
+    {% endif %}
+    {% if member.code %}
+    <a href="{{member.code}}">(code)</a>
+    {% endif %}      
     {% for tag in member.tags %}
     <span class="label label-info">{{tag}}</span>
     {% endfor %}
@@ -40,7 +43,10 @@ layout: default
     {% endif %}
     {% if member.pdf %}
     <a href="{{member.pdf}}">(pdf)</a>
-    {% endif %}    
+    {% endif %} 
+    {% if member.code %}
+    <a href="{{member.code}}">(code)</a>
+    {% endif %}     
     {% for tag in member.tags %}
     <span class="label label-info">{{tag}}</span>
     {% endfor %}
@@ -62,7 +68,10 @@ layout: default
     {% endif %}
     {% if member.pdf %}
     <a href="{{member.pdf}}">(pdf)</a>
-    {% endif %}        
+    {% endif %}
+    {% if member.code %}
+    <a href="{{member.code}}">(code)</a>
+    {% endif %}         
     {% for tag in member.tags %}
     <span class="label label-info">{{tag}}</span>
     {% endfor %}    

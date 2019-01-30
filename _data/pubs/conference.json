@@ -39,6 +39,7 @@
     "type": "conference",
     "year": 2017,
     "tags": [],
+    "code": "https://github.com/gregongie/online_mri",
     "url": "https://gregongie.github.io/files/papers/onlineMRI.pdf"
 },
 {
@@ -58,7 +59,6 @@
     "type": "conference",
     "year": 2017,
     "url": "http://ieeexplore.ieee.org/abstract/document/7950616/",
-    "code": "",
     "tags": []
 },
 {
@@ -68,7 +68,6 @@
     "type": "conference",
     "year": 2016,
     "url": "http://ieeexplore.ieee.org/abstract/document/7532500/",
-    "code": "",
     "tags": []
 },
 {
@@ -78,7 +77,7 @@
     "type": "conference",
     "year": 2016,
     "url": "http://ieeexplore.ieee.org/abstract/document/7532680/",
-    "code": "",
+    "code": "https://github.com/cbig-iowa/giraf",
     "tags": []
 },
 {
@@ -88,7 +87,7 @@
     "type": "conference",
     "year": 2016,
     "url": "http://ieeexplore.ieee.org/abstract/document/7493322/",
-    "code": "",
+    "code": "https://github.com/cbig-iowa/giraf",
     "tags": []
 },
 {
@@ -98,7 +97,6 @@
     "type": "conference",
     "year": 2015,
     "url": "http://ieeexplore.ieee.org/abstract/document/7148950/",
-    "code": "",
     "tags": []
 },
 {
@@ -108,7 +106,7 @@
     "type": "conference",
     "year": 2015,
     "url": "http://ieeexplore.ieee.org/abstract/document/7164100/",
-    "code": "",
+    "code": "https://github.com/cbig-iowa/superres",
     "tags": ["Best student paper award winner"]
 },
 {
@@ -118,7 +116,7 @@
     "type": "conference",
     "year": 2014,
     "url": "http://ieeexplore.ieee.org/abstract/document/6868042/",
-    "code": "",
+    "code": "https://github.com/cbig-iowa/hdtv",
     "tags": []
 },
 {
@@ -128,6 +126,6 @@
     "type": "conference",
     "year": 2014,
     "url": "http://ieeexplore.ieee.org/abstract/document/6943897/",
-    "code": "",
+    "code": "http://research.engineering.uiowa.edu/cbig/content/patch-based-shrinkage-regularization",
     "tags": []
 }]
