@@ -1,5 +1,31 @@
 [
 {
+    "title": "Neumann Networks for Inverse Problems in Imaging",
+    "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
+    "journal": "IEEE Transactions on Computational Imaging (to appear)",
+    "year": 2019,
+    "url": "https://arxiv.org/abs/1901.03707",
+    "tags": []
+},
+{
+    "title": "Streaming Principal Component Analysis From Incomplete Data",
+    "authors": "A. Eftekhari, <b>G. Ongie</b>, L. Balzano, M. Wakin",
+    "journal": "Journal of Machine Learning Research",
+    "year": 2019,
+    "url": "https://arxiv.org/abs/1612.00904",
+    "tags": []
+},
+{
+    "title": "Algebraic Variety Models for High-Rank Matrix Completion",
+    "authors": "<b>G. Ongie</b>, R. Willett, R. Nowak, L. Balzano",
+    "journal": "ICML",
+    "type": "conference",
+    "year": 2017,
+    "url": "http://proceedings.mlr.press/v70/ongie17a.html",
+    "code": "https://github.com/gregongie/vmc",
+    "tags": []
+},
+{
     "title": "Convex Recovery of Continuous Domain Piecewise Constant Images from Non-Uniform Fourier samples",
     "authors": "<b>G. Ongie</b>, S. Biswas, M. Jacob",
     "journal": "IEEE Transactions on Signal Processing",

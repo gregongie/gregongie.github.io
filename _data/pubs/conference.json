@@ -1,4 +1,23 @@
-[{
+[
+{
+    "title": "Learned Patch-based Regularization for Inverse Problems in Imaging",
+    "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
+    "journal": "CAMSAP",
+    "type": "conference",
+    "year": 2019,
+    "tags": [],
+    "url": ""
+},
+{
+    "title": "Learning to Regularize with Neumann Networks",
+    "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
+    "journal": "IEEE Data Science Workshop",
+    "type": "conference",
+    "year": 2019,
+    "tags": [],
+    "url": ""
+},
+{
     "title": "Online Estimation of Coherent Subspaces with Adaptive Sampling",
     "authors": "<b>G. Ongie</b>, D. Hong, D. Zhang, L. Balzano",
     "journal": "SSP Workshop",
@@ -41,16 +60,6 @@
     "tags": [],
     "code": "https://github.com/gregongie/online_mri",
     "url": "https://gregongie.github.io/files/papers/onlineMRI.pdf"
-},
-{
-    "title": "Algebraic Variety Models for High-Rank Matrix Completion",
-    "authors": "<b>G. Ongie</b>, R. Willett, R. Nowak, L. Balzano",
-    "journal": "ICML",
-    "type": "conference",
-    "year": 2017,
-    "url": "http://proceedings.mlr.press/v70/ongie17a.html",
-    "code": "https://github.com/gregongie/vmc",
-    "tags": []
 },
 {
     "title": "Efficient Computation of Regularized Field Map Estimates in 3D",
