@@ -41,9 +41,6 @@ layout: default
     </a>
   </br>
     {{member.authors}}. {{member.journal}}. {{member.year}}.
-    {% if member.bibtex %}
-    <a href="#" class="biblink" data-bib="{{member.bibtex | escape}}">(bib)</a>
-    {% endif %}
     {% if member.pdf %}
     <a href="{{member.pdf}}">(pdf)</a>
     {% endif %} 
@@ -66,9 +63,6 @@ layout: default
     </a>
   </br>    
     {{member.authors}}. {{member.journal}}. {{member.year}}.
-    {% if member.bibtex %}
-    <a href="#" class="biblink" data-bib="{{member.bibtex | escape}}">(bib)</a>
-    {% endif %}
     {% if member.pdf %}
     <a href="{{member.pdf}}">(pdf)</a>
     {% endif %}
