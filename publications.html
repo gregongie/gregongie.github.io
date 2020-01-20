@@ -16,6 +16,9 @@ layout: default
     </a>
   </br>
     {{member.authors}}. {{member.year}}.
+    {% if member.comment %}
+    <em>{{member.comment}}.</em>
+    {% endif %}
     {% if member.pdf %}
     <a href="{{member.pdf}}">(pdf)</a>
     {% endif %}

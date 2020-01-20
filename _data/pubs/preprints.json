@@ -4,7 +4,8 @@
     "authors": "<b>G. Ongie</b>, R. Willett, D. Soudry, N. Srebro",
     "year": 2019,
     "url": "https://arxiv.org/abs/1910.01635",
-    "tags": []
+    "tags": [],
+    "comment": "Accepted to ICLR 2020"
 },
 {
     "title": "Tensor Methods for Nonlinear Matrix Completion",
