@@ -2,9 +2,10 @@
 {
     "title": "Neumann Networks for Linear Inverse Problems in Imaging",
     "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
-    "journal": "IEEE Transactions on Computational Imaging (to appear)",
+    "journal": "IEEE Transactions on Computational Imaging",
     "year": 2019,
-    "url": "https://arxiv.org/abs/1901.03707",
+    "url": "https://ieeexplore.ieee.org/document/8878159",
+    "code": "https://github.com/dgilton/neumann_networks_code",
     "tags": []
 },
 {
@@ -12,7 +13,7 @@
     "authors": "A. Eftekhari, <b>G. Ongie</b>, L. Balzano, M. Wakin",
     "journal": "Journal of Machine Learning Research",
     "year": 2019,
-    "url": "https://arxiv.org/abs/1612.00904",
+    "url": "http://jmlr.org/papers/v20/16-627.html",
     "tags": []
 },
 {
