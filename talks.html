@@ -4,17 +4,6 @@ header: Talks
 byline: 
 layout: default
 ---
-<h2>Conference Talks</h2>
-<ul>
-{% for member in site.data.talks.conference %}
-  <li>
-    <b>{{ member.title }}</b>.
-    <br>
-    {{member.venue}}. {{member.year}}.
-  </li>
-{% endfor %}
-</ul>
-
 <h2>Invited Talks</h2>
 <ul>
 {% for member in site.data.talks.invited %}
@@ -25,3 +14,15 @@ layout: default
   </li>
 {% endfor %}
 </ul>
+
+<h2>Conference Talks</h2>
+<ul>
+{% for member in site.data.talks.conference_slim %}
+  <li>
+    <b>{{ member.conference }}</b>.
+    <br>
+    {{member.location}}. {{member.date}}.
+  </li>
+{% endfor %}
+</ul>
+

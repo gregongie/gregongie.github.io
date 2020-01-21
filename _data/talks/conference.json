@@ -1,5 +1,14 @@
 [
 {
+    "title": "Adaptive Sampling for Online Subspace Estimation",
+    "authors": "<b>G. Ongie</b>, D. Hong, D. Zhang, L. Balzano",
+    "venue": "ISMP, Bordeaux, France",
+    "type": "conference",
+    "year": 2017,
+    "ppt": "",
+    "pdf": ""    
+},
+{
     "title": "Online Dynamic MRI Reconstruction via Robust Subspace Tracking",
     "authors": "<b>G. Ongie</b>, S. Dewangan, L. Balzano, J. Fessler",
     "venue": "GlobalSIP, Montreal, Canada",

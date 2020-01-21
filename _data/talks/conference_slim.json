@@ -1,0 +1,78 @@
+[
+{
+    "conference": "Allerton Conference on Communication, Control, and Computing.",
+    "location": "Champaign, IL",
+    "date": "Sept 2019" 
+},
+{
+    "conference": "AMS Fall Central Sectional Meeting.",
+    "location": "Madison, WI",
+    "date": "Sept 2019" 
+},
+{
+    "conference": "SIAM Applied Algebraic Geometry (SIAM AG19)",
+    "location": "Bern, Switzerland",
+    "date": "July 2019" 
+},
+{
+    "conference": "Image Processing: Algorithm and Systems (IPAS)",
+    "location": "Burlingame, CA",
+    "date": "Jan 2019" 
+},
+{
+    "conference": "SIAM Annual Meeting (SIAM AN18)",
+    "location": "Portland, OR",
+    "date": "July 2018" 
+},
+{
+    "conference": "International Symposium on Mathematical Programming (ISMP)",
+    "location": "Bordeaux, France",
+    "date": "July 2018" 
+},
+{
+    "conference": "Global Conference on Signal and Information Processing (GlobalSIP)",
+    "location": "Montreal, Canada",
+    "date": "Nov 2017" 
+},
+{
+    "conference": "Asilomar Conference on Signals, Systems, and Computers.",
+    "location": "Monterrey, CA",
+    "date": "Oct 2017" 
+},
+{
+    "conference": "International Conference on Machine Learning (ICML)",
+    "location": "Sydney, Australia",
+    "date": "Aug 2017" 
+},
+{
+    "conference": "IEEE International Conference on Image Processing (ICIP)",
+    "location": "Phoenix, AZ",
+    "date": "Sept 2016" 
+},
+{
+    "conference": "SIAM Imaging Sciences (SIAM IS16)",
+    "location": "Albuquerque, NM",
+    "date": "May 2016" 
+},
+{
+    "conference": "IEEE International Symposium on Biomedical Imaging (ISBI)",
+    "location": "Prague, Czech Republic",
+    "date": "April 2016" 
+},
+{
+    "conference": "Sampling Theory and Applications (SampTA)",
+    "location": "Washington, D.C.",
+    "date": "May 2015" 
+},
+{
+    "conference": "IEEE International Symposium on Biomedical Imaging (ISBI)",
+    "location": "Brooklyn, NY",
+    "date": "May 2015" 
+},
+{
+    "conference": "IEEE International Symposium on Biomedical Imaging (ISBI)",
+    "location": "Beijing, China",
+    "date": "May 2014" 
+}
+
+]
