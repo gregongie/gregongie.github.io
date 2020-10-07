@@ -1,16 +1,8 @@
 [
 {
-    "title": "A Function Space View of Bounded Norm Infinite Width ReLU Nets: The Multivariate Case",
-    "authors": "<b>G. Ongie</b>, R. Willett, D. Soudry, N. Srebro",
-    "year": 2019,
-    "url": "https://arxiv.org/abs/1910.01635",
-    "tags": [],
-    "comment": "Accepted to ICLR 2020"
-},
-{
     "title": "Tensor Methods for Nonlinear Matrix Completion",
     "authors": "<b>G. Ongie</b>, L. Balzano, D. Pimentel, R. Willett, R. Nowak",
-    "year": 2018,
+    "year": 2020,
     "url": "https://arxiv.org/abs/1804.10266",
     "tags": []
 }

@@ -1,5 +1,20 @@
 [
 {
+    "title": "Deep Learning Techniques for Inverse Problems in Imaging.",
+    "authors": "<b>G. Ongie</b>, A. Jalal, C. Metzler, R. Baraniuk, A. Dimakis, R. Willett",
+    "journal": "IEEE Journal on Selected Areas in Information Theory",
+    "year": 2020,
+    "url": "https://arxiv.org/pdf/2005.06001.pdf"
+},
+{
+    "title": "A Function Space View of Bounded Norm Infinite Width ReLU Nets: The Multivariate Case",
+    "authors": "<b>G. Ongie</b>, R. Willett, D. Soudry, N. Srebro",
+    "year": 2020,
+    "url": "https://arxiv.org/abs/1910.01635",
+    "tags": [],
+    "journal": "International Conference on Learning Representations (ICLR)"
+},
+{
     "title": "Neumann Networks for Linear Inverse Problems in Imaging",
     "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
     "journal": "IEEE Transactions on Computational Imaging",
@@ -19,7 +34,7 @@
 {
     "title": "Algebraic Variety Models for High-Rank Matrix Completion",
     "authors": "<b>G. Ongie</b>, R. Willett, R. Nowak, L. Balzano",
-    "journal": "ICML",
+    "journal": "International Conference on Machine Learning (ICML)",
     "type": "conference",
     "year": 2017,
     "url": "http://proceedings.mlr.press/v70/ongie17a.html",
