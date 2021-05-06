@@ -1,5 +1,14 @@
 [
 {
+    "title": "Model Adaptation for Inverse Problems in Biomedical Imaging",
+    "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
+    "journal": "IEEE International Symposium on Biomedical Imaging (ISBI)",
+    "type": "conference",
+    "year": 2021,
+    "tags": [],
+    "url": ""
+},    
+{
     "title": "Supervised Learning of Model Observers for Assessment of CT Image Reconstruction Algorithms",
     "authors": "<b>G. Ongie</b>, E. Sidky, I. Reiser, X. Pan",
     "journal": "SPIE Medical Imaging",

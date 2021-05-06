@@ -1,16 +1,23 @@
 [
 {
+    "title": "Deep Equilibrium Architectures for Inverse Problems in Imaging",
+    "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
+    "year": 2021,
+    "url": "https://arxiv.org/abs/2102.07944",
+    "tags": []
+},
+{
+    "title": "Model Adaptation for Inverse Problems in Imaging",
+    "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
+    "year": 2021,
+    "url": "https://arxiv.org/abs/2012.00139",
+    "tags": []
+},
+{
     "title": "A Signal Detection Model for Quantifying Over-regularization in Non-linear Image Reconstruction",
     "authors": "E.Y. Sidky, J.P. Phillips, W. Zhou, <b>G. Ongie</b>, J. Cruz-Bastida, I. S. Reiser, M. A. Anastasio, X. Pan",
     "year": 2020,
     "url": "https://arxiv.org/abs/2010.03472",
-    "tags": []
-},
-{
-    "title": "Tensor Methods for Nonlinear Matrix Completion",
-    "authors": "<b>G. Ongie</b>, L. Balzano, D. Pimentel, R. Willett, R. Nowak",
-    "year": 2020,
-    "url": "https://arxiv.org/abs/1804.10266",
     "tags": []
 }
 ]

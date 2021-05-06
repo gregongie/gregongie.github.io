@@ -1,5 +1,13 @@
 [
 {
+    "title": "Tensor Methods for Nonlinear Matrix Completion",
+    "authors": "<b>G. Ongie</b>, L. Balzano, D. Pimentel, R. Willett, R. Nowak",
+    "journal": "SIAM Journal on Mathematics of Data Science",
+    "year": 2021,
+    "url": "https://epubs.siam.org/doi/abs/10.1137/20M1323448",
+    "tags": []
+},
+{
     "title": "Deep Learning Techniques for Inverse Problems in Imaging",
     "authors": "<b>G. Ongie</b>, A. Jalal, C. Metzler, R. Baraniuk, A. Dimakis, R. Willett",
     "journal": "IEEE Journal on Selected Areas in Information Theory",
