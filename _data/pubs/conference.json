@@ -1,4 +1,23 @@
-[
+[ 
+{
+    "title": "Evaluation of deep learning-based CT reconstruction with a signal-Laplacian model observer",
+    "authors": "<b>G. Ongie</b>, E. Sidky, I. Reiser, X. Pan",
+    "journal": "CT Meeting",
+    "type": "conference",
+    "year": 2022,
+    "tags": [],
+    "url": "https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12304/123040U/Evaluation-of-deep-learning-based-CT-reconstruction-with-a-signal/10.1117/12.2647039.full"
+},
+{
+    "title": "Optimizing model observer performance in learning-based CT reconstruction",
+    "authors": "<b>G. Ongie</b>, E. Sidky, I. Reiser, X. Pan",
+    "journal": "SPIE Medical Imaging",
+    "type": "conference",
+    "year": 2022,
+    "tags": [],
+    "video": "https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12035/0000/Optimizing-model-observer-performance-in-learning-based-CT-reconstruction/10.1117/12.2613050.full",
+    "url": "https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12035/0000/Optimizing-model-observer-performance-in-learning-based-CT-reconstruction/10.1117/12.2613050.full"
+},
 {
     "title": "Model Adaptation for Inverse Problems in Biomedical Imaging",
     "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
@@ -15,7 +34,8 @@
     "type": "conference",
     "year": 2020,
     "tags": [],
-    "url": ""
+    "url": "https://www.spiedigitallibrary.org/conference-proceedings-of-spie/11316/113160B/Supervised-learning-of-model-observers-for-assessment-of-CT-image/10.1117/12.2549817.full",
+    "video": "https://www.spiedigitallibrary.org/conference-proceedings-of-spie/11316/113160B/Supervised-learning-of-model-observers-for-assessment-of-CT-image/10.1117/12.2549817.full"
 },
 {
     "title": "Learned Patch-based Regularization for Inverse Problems in Imaging",

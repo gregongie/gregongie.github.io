@@ -1,23 +1,26 @@
 [
 {
-    "title": "Deep Equilibrium Architectures for Inverse Problems in Imaging",
-    "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
-    "year": 2021,
-    "url": "https://arxiv.org/abs/2102.07944",
+    "title": "The Implicit Bias of Minima Stability in Multivariate Shallow ReLU Networks",
+    "authors": "M.S. Nacson, R. Mulayoff, <b>G. Ongie</b>, T. Michaeli, D. Soudry",
+    "year": 2023,
+    "comment": "Accepted to ICLR 2023",
+    "url": "https://openreview.net/forum?id=xtbog7cfsr",
     "tags": []
 },
 {
-    "title": "Model Adaptation for Inverse Problems in Imaging",
-    "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
-    "year": 2021,
-    "url": "https://arxiv.org/abs/2012.00139",
-    "tags": []
-},
+    "title": "Learning-based Material Decomposition in Dual Energy CT Using an Unrolled Estimator",
+    "authors": "M. Lantz, <b>G. Ongie</b>",
+    "comment": "Accepted to IEEE ISBI 2023",
+    "type": "conference",
+    "year": 2023,
+    "tags": [],
+    "url": "https://gregongie.github.io/files/papers/isbi2023.pdf"
+},   
 {
-    "title": "A Signal Detection Model for Quantifying Over-regularization in Non-linear Image Reconstruction",
-    "authors": "E.Y. Sidky, J.P. Phillips, W. Zhou, <b>G. Ongie</b>, J. Cruz-Bastida, I. S. Reiser, M. A. Anastasio, X. Pan",
-    "year": 2020,
-    "url": "https://arxiv.org/abs/2010.03472",
+    "title": "The Role of Linear Layers in Nonlinear Interpolating Networks",
+    "authors": "<b>G. Ongie</b>, R. Willett",
+    "year": 2022,
+    "url": "https://arxiv.org/abs/2202.00856",
     "tags": []
 }
 ]

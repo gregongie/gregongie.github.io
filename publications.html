@@ -44,6 +44,12 @@ layout: default
     {% if member.pdf %}
     <a href="{{member.pdf}}">(pdf)</a>
     {% endif %} 
+    {% if member.arxiv %}
+    <a href="{{member.arxiv}}">(arxiv)</a>
+    {% endif %} 
+    {% if member.video %}
+    <a href="{{member.video}}">(video)</a>
+    {% endif %} 
     {% if member.code %}
     <a href="{{member.code}}">(code)</a>
     {% endif %}     
@@ -64,8 +70,14 @@ layout: default
   </br>    
     {{member.authors}}. {{member.journal}}. {{member.year}}.
     {% if member.pdf %}
-    <a href="{{member.pdf}}">(pdf)</a>
-    {% endif %}
+    <a href="{{member.pdf}">(pdf)</a>
+    {% endif %} 
+    {% if member.arxiv %}
+    <a href="{{member.arxiv}}">(arxiv)</a>
+    {% endif %} 
+    {% if member.video %}
+    <a href="{{member.video}}">(video)</a>
+    {% endif %} 
     {% if member.code %}
     <a href="{{member.code}}">(code)</a>
     {% endif %}         

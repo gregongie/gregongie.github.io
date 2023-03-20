@@ -1,10 +1,39 @@
 [
 {
+    "title": "Deep Equilibrium Architectures for Inverse Problems in Imaging",
+    "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
+    "year": 2021,
+    "journal": "IEEE Transactions on Computational Imaging",
+    "url": "https://ieeexplore.ieee.org/abstract/document/9565378",
+    "arxiv": "https://arxiv.org/abs/2102.07944",
+    "code": "https://github.com/dgilton/deep_equilibrium_inverse",
+    "tags": []
+},
+{
+    "title": "Model Adaptation for Inverse Problems in Imaging",
+    "authors": "D. Gilton, <b>G. Ongie</b>, R. Willett",
+    "year": 2021,
+    "journal": "IEEE Transactions on Computational Imaging",
+    "url": "https://ieeexplore.ieee.org/abstract/document/9477112",
+    "arxiv": "https://arxiv.org/abs/2012.00139",
+    "tags": []
+},
+{
+    "title": "A Signal Detection Model for Quantifying Over-regularization in Non-linear Image Reconstruction",
+    "authors": "E.Y. Sidky, J.P. Phillips, W. Zhou, <b>G. Ongie</b>, J. Cruz-Bastida, I. S. Reiser, M. A. Anastasio, X. Pan",
+    "year": 2021,
+    "journal": "Medical Physics",
+    "url": "https://aapm.onlinelibrary.wiley.com/doi/full/10.1002/mp.14703",
+    "arxiv": "https://arxiv.org/abs/2010.03472",
+    "tags": []
+},
+{
     "title": "Tensor Methods for Nonlinear Matrix Completion",
     "authors": "<b>G. Ongie</b>, L. Balzano, D. Pimentel, R. Willett, R. Nowak",
     "journal": "SIAM Journal on Mathematics of Data Science",
     "year": 2021,
     "url": "https://epubs.siam.org/doi/abs/10.1137/20M1323448",
+    "arxiv": "https://arxiv.org/abs/1804.10266",
     "tags": []
 },
 {
@@ -20,6 +49,7 @@
     "year": 2020,
     "url": "https://arxiv.org/abs/1910.01635",
     "tags": [],
+    "video": "https://iclr.cc/virtual_2020/poster_H1lNPxHKDH.html",
     "journal": "International Conference on Learning Representations (ICLR)"
 },
 {
