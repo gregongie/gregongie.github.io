@@ -4,7 +4,20 @@ header: Talks
 byline: 
 layout: default
 ---
-<h2>Invited Talks</h2>
+<h2>Recent Videos</h2>
+<ul>
+{% for member in site.data.talks.videos %}
+  <li>
+    <a href="{{ member.url }}">
+    <b>{{ member.title }}</b>
+    <br>
+    {{member.venue}}. {{member.year}}.
+    </a>
+  </li>
+{% endfor %}
+</ul>
+
+<!-- <h2>Invited Talks</h2>
 <ul>
 {% for member in site.data.talks.invited %}
   <li>
@@ -25,4 +38,4 @@ layout: default
   </li>
 {% endfor %}
 </ul>
-
+ -->

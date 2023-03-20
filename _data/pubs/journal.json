@@ -47,10 +47,11 @@
     "title": "A Function Space View of Bounded Norm Infinite Width ReLU Nets: The Multivariate Case",
     "authors": "<b>G. Ongie</b>, R. Willett, D. Soudry, N. Srebro",
     "year": 2020,
-    "url": "https://arxiv.org/abs/1910.01635",
+    "url": "https://iclr.cc/virtual_2020/poster_H1lNPxHKDH.html",
     "tags": [],
     "video": "https://iclr.cc/virtual_2020/poster_H1lNPxHKDH.html",
-    "journal": "International Conference on Learning Representations (ICLR)"
+    "journal": "International Conference on Learning Representations (ICLR)",
+    "arxiv": "https://arxiv.org/abs/1910.01635"
 },
 {
     "title": "Neumann Networks for Linear Inverse Problems in Imaging",
@@ -85,7 +86,7 @@
     "journal": "IEEE Transactions on Signal Processing",
     "type": "journal",
     "year": 2017,
-    "url": "http://ieeexplore.ieee.org/document/8027083/",
+    "url": "http://ieeexplore.ieee.org/abstract/document/8027083/",
     "tags": []
 },
 {
