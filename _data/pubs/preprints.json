@@ -1,5 +1,12 @@
 [
 {
+    "title": "Linear Neural Network Layers Promote Learning Single- and Multiple-Index Models",
+    "authors": "S. Parkinsn, <b>G. Ongie</b>, R. Willett",
+    "year": 2023,
+    "url": "https://arxiv.org/abs/2305.15598",
+    "tags": []
+}
+{
     "title": "The Implicit Bias of Minima Stability in Multivariate Shallow ReLU Networks",
     "authors": "M.S. Nacson, R. Mulayoff, <b>G. Ongie</b>, T. Michaeli, D. Soudry",
     "year": 2023,
@@ -15,12 +22,5 @@
     "year": 2023,
     "tags": [],
     "url": "https://gregongie.github.io/files/papers/isbi2023.pdf"
-},   
-{
-    "title": "The Role of Linear Layers in Nonlinear Interpolating Networks",
-    "authors": "<b>G. Ongie</b>, R. Willett",
-    "year": 2022,
-    "url": "https://arxiv.org/abs/2202.00856",
-    "tags": []
 }
 ]
