@@ -1,9 +1,17 @@
 [
 {
-      "title": "How do Minimum-Norm Shallow Denoisers Look in Function Space?",
-    "authors": "C. Zeno, <b>G. Ongie</b>, Y. Blumenfeld, N. Weinberger, D. Soudry",
-    "year": 2023,
-    "url": "https://arxiv.org/abs/2311.06748",
+    "title": "Enhancing Signal Detectability in Learning-Based CT Reconstruction with a Model Observer Inspired Loss Function",
+    "authors": "M. Lantz, E. Sidky, I. Reiser, X. Pan, <b>G. Ongie</b>",
+    "year": 2024,
+    "tags": [],
+    "url": "https://arxiv.org/abs/2402.10010",
+    "code": "https://github.com/m-lantz/ct_recon_SigPro"
+},
+{
+    "title": "Depth Separation in Norm-Bounded Infinite-Width Neural Networks",
+    "authors": "S. Parkinson, <b>G. Ongie</b>, R. Willett, O. Shamir, N. Srebro",
+    "year": 2024,
+    "url": "https://arxiv.org/abs/2402.08808",
     "tags": []
 },
 {
@@ -12,14 +20,5 @@
     "year": 2023,
     "url": "https://arxiv.org/abs/2305.15598",
     "tags": []
-},
-{
-    "title": "Learning-based Material Decomposition in Dual Energy CT Using an Unrolled Estimator",
-    "authors": "M. Lantz, <b>G. Ongie</b>",
-    "comment": "Accepted to IEEE ISBI 2023",
-    "type": "conference",
-    "year": 2023,
-    "tags": [],
-    "url": "https://gregongie.github.io/files/papers/isbi2023.pdf"
 }
 ]
