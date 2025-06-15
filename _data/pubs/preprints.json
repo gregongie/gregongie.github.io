@@ -1,24 +1,18 @@
 [
 {
+    "title": "Sampling Theory for Super-Resolution with Implicit Neural Representations",
+    "authors": "M. Najaf, <b>G. Ongie</b>",
+    "year": 2025,
+    "tags": [],
+    "url": "https://arxiv.org/pdf/2506.09949",
+    "code": "https://github.com/gregongie/super_inrs"
+},
+{
     "title": "Enhancing Signal Detectability in Learning-Based CT Reconstruction with a Model Observer Inspired Loss Function",
-    "authors": "M. Lantz, E. Sidky, I. Reiser, X. Pan, <b>G. Ongie</b>",
+    "authors": "M. Murphy, E. Sidky, I. Reiser, X. Pan, <b>G. Ongie</b>",
     "year": 2024,
     "tags": [],
     "url": "https://arxiv.org/abs/2402.10010",
     "code": "https://github.com/m-lantz/ct_recon_SigPro"
-},
-{
-    "title": "Depth Separation in Norm-Bounded Infinite-Width Neural Networks",
-    "authors": "S. Parkinson, <b>G. Ongie</b>, R. Willett, O. Shamir, N. Srebro",
-    "year": 2024,
-    "url": "https://arxiv.org/abs/2402.08808",
-    "tags": []
-},
-{
-    "title": "Linear Neural Network Layers Promote Learning Single- and Multiple-Index Models",
-    "authors": "S. Parkinson, <b>G. Ongie</b>, R. Willett",
-    "year": 2023,
-    "url": "https://arxiv.org/abs/2305.15598",
-    "tags": []
 }
 ]

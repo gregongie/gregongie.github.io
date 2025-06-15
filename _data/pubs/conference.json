@@ -1,5 +1,50 @@
 [
 {
+    "title": "Accelerated Optimization of Implicit Neural Representations for CT Reconstruction",
+    "authors": "M. Najaf, <b>G. Ongie</b>",
+    "journal": "IEEE International Symposium on Biomedical Imaging (ISBI)",
+    "type": "conference",
+    "year": 2025,
+    "tags": [],
+    "url": "https://ieeexplore.ieee.org/abstract/document/10981244"
+},
+{
+    "title": "Direct Optimization of Signal Detection Metrics in Learning-Based CT Image Restoration",
+    "authors": "<b>G. Ongie</b>, M. Lantz, E. Sidky, I. Reiser, X. Pan",
+    "journal": "SPIE Medical Imaging",
+    "type": "conference",
+    "year": 2025,
+    "tags": [],
+    "url": "https://www.spiedigitallibrary.org/conference-proceedings-of-spie/13409/134090R/Direct-optimization-of-signal-detection-metrics-in-learning-based-CT/10.1117/12.3047298.short"
+},
+{
+    "title": "Towards a Sampling Theory for Implicit Neural Representations",
+    "authors": "M. Najaf, <b>G. Ongie</b>",
+    "journal": "Asilomar",
+    "type": "conference",
+    "year": 2024,
+    "tags": [],
+    "url": "https://ieeexplore.ieee.org/document/10942973"
+},
+{
+    "title": "Simultaneous Spectral Calibration and Image Reconstruction in Spectral CT with a Sum of Deltas Spectrum Model",
+    "authors": "<b>G. Ongie</b>, B. Chen, Z. Zhang, D. Xia, E. Sidky, X. Pan",
+    "journal": "CT Meeting",
+    "type": "conference",
+    "year": 2024,
+    "tags": [],
+    "url": "https://www.ct-meeting.org/?p=meeting_2024"
+},
+{
+    "title": "Continuous Domain Reconstruction in CT Imaging with Coordinate-Based Neural Networks",
+    "authors": "<b>G. Ongie</b>",
+    "journal": "CT Meeting",
+    "type": "conference",
+    "year": 2024,
+    "tags": [],
+    "url": "https://www.ct-meeting.org/?p=meeting_2024"
+},
+{
     "title": "Investigation of Different Model Observers for Including Signal-Detectability in the Training of CNNs for CT Image Reconstruction",
     "authors": "<b>G. Ongie</b>, M. Lantz, E. Sidky, I. Reiser, X. Pan",
     "journal": "SPIE Medical Imaging",
@@ -18,7 +63,7 @@
     "url": "https://gregongie.github.io/files/papers/isbi2023.pdf"
 },
 {
-    "title": "Evaluation of deep learning-based CT reconstruction with a signal-Laplacian model observer",
+    "title": "Evaluation of Deep Learning-Based CT Reconstruction with a Signal-Laplacian Model Observer",
     "authors": "<b>G. Ongie</b>, E. Sidky, I. Reiser, X. Pan",
     "journal": "CT Meeting",
     "type": "conference",
@@ -27,7 +72,7 @@
     "url": "https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12304/123040U/Evaluation-of-deep-learning-based-CT-reconstruction-with-a-signal/10.1117/12.2647039.full"
 },
 {
-    "title": "Optimizing model observer performance in learning-based CT reconstruction",
+    "title": "Optimizing Model Observer Performance in Learning-Based CT Reconstruction",
     "authors": "<b>G. Ongie</b>, E. Sidky, I. Reiser, X. Pan",
     "journal": "SPIE Medical Imaging",
     "type": "conference",
