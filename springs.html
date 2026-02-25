@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mass-Spring System Simulator</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0e13;
+    --surface: #14171e;
+    --surface2: #1a1e28;
+    --border: #2a2f3c;
+    --text: #e0e4ef;
+    --text-dim: #7a8199;
+    --accent: #4fc3f7;
+    --accent2: #81d4fa;
+    --spring: #66bb6a;
+    --danger: #ef5350;
+    --warn: #ffa726;
+    --mass-color: #37474f;
+    --mass-border: #546e7a;
+    --wall: #455a64;
+    --radius: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .app {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 20px 48px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  header h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  header .equation {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  .sim-canvas-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  canvas { display: block; width: 100%; }
+
+  .controls-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 8px 22px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface2);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .btn.stop { }
+  .btn.stop:hover { border-color: var(--danger); color: var(--danger); }
+  .btn.reset:hover { border-color: var(--warn); color: var(--warn); }
+
+  .panel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 700px) {
+    .panel-grid { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+
+  .panel-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+
+  .param-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .param-row:last-child { margin-bottom: 0; }
+
+  .param-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    min-width: 28px;
+    text-align: right;
+  }
+
+  .param-label .unit {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    opacity: 0.6;
+  }
+
+  input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--bg);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--bg);
+  }
+
+  .param-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent2);
+    min-width: 52px;
+    text-align: left;
+  }
+
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .input-row:last-child { margin-bottom: 0; }
+
+  .input-field {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    padding: 5px 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    width: 70px;
+    outline: none;
+    text-align: center;
+  }
+
+  .input-field:focus { border-color: var(--accent); }
+
+  select {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    padding: 5px 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+    flex: 1;
+  }
+
+  select:focus { border-color: var(--accent); }
+
+  .force-params {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .info-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+
+  .info-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 10px;
+  }
+
+  .info-chip span { color: var(--accent2); }
+
+  .plot-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Mass–Spring System Simulator</h1>
+    <div class="equation">m y'' + γ y' + k y = F(t)</div>
+  </header>
+
+  <div class="sim-canvas-wrap">
+    <canvas id="simCanvas" width="1100" height="220"></canvas>
+  </div>
+
+  <div class="controls-row">
+    <button class="btn" id="playBtn" onclick="togglePlay()">▶ Play</button>
+    <button class="btn stop" id="stopBtn" onclick="stopSim()">■ Stop</button>
+    <button class="btn reset" onclick="resetSim()">↺ Reset</button>
+  </div>
+
+  <div class="info-row" id="infoRow">
+    <div class="info-chip">t = <span id="infoT">0.00</span> s</div>
+    <div class="info-chip">y = <span id="infoY">0.00</span> m</div>
+    <div class="info-chip">y' = <span id="infoV">0.00</span> m/s</div>
+    <div class="info-chip">regime: <span id="infoRegime">—</span></div>
+  </div>
+
+  <div class="panel-grid">
+    <div class="panel">
+      <div class="panel-title">System Parameters</div>
+      <div class="param-row">
+        <span class="param-label">m <span class="unit">kg</span></span>
+        <input type="range" id="sliderM" min="0.1" max="20" step="0.1" value="2">
+        <span class="param-value" id="valM">2.0</span>
+      </div>
+      <div class="param-row">
+        <span class="param-label">γ <span class="unit">Ns/m</span></span>
+        <input type="range" id="sliderG" min="0" max="20" step="0.1" value="1">
+        <span class="param-value" id="valG">1.0</span>
+      </div>
+      <div class="param-row">
+        <span class="param-label">k <span class="unit">N/m</span></span>
+        <input type="range" id="sliderK" min="0.1" max="100" step="0.1" value="10">
+        <span class="param-value" id="valK">10.0</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Initial Conditions</div>
+      <div class="input-row">
+        <span class="param-label">y₀</span>
+        <input type="number" class="input-field" id="inputY0" value="1.0" step="0.1">
+        <span class="param-label"><span class="unit">m</span></span>
+      </div>
+      <div class="input-row">
+        <span class="param-label">y₀'</span>
+        <input type="number" class="input-field" id="inputV0" value="0.0" step="0.1">
+        <span class="param-label"><span class="unit">m/s</span></span>
+      </div>
+
+      <div class="panel-title" style="margin-top:16px;">External Force F(t)</div>
+      <div class="input-row">
+        <select id="forceType" onchange="updateForceUI()">
+          <option value="none">F(t) = 0</option>
+          <option value="constant">Constant: F₀</option>
+          <option value="sine">Sine: F₀ sin(ωt)</option>
+          <option value="cosine">Cosine: F₀ cos(ωt)</option>
+          <option value="square">Square wave</option>
+          <option value="sawtooth">Sawtooth wave</option>
+          <option value="impulse">Impulse at t=0</option>
+          <option value="step">Step at t₀</option>
+        </select>
+      </div>
+      <div class="force-params" id="forceParams" style="display:none;">
+        <div class="input-row" id="ampRow">
+          <span class="param-label">F₀ <span class="unit">N</span></span>
+          <input type="number" class="input-field" id="inputF0" value="5.0" step="0.5">
+        </div>
+        <div class="input-row" id="freqRow" style="display:none;">
+          <span class="param-label">ω <span class="unit">rad/s</span></span>
+          <input type="number" class="input-field" id="inputOmega" value="3.0" step="0.1">
+        </div>
+        <div class="input-row" id="stepTimeRow" style="display:none;">
+          <span class="param-label">t₀ <span class="unit">s</span></span>
+          <input type="number" class="input-field" id="inputStepTime" value="1.0" step="0.1">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plot-wrap">
+    <canvas id="plotCanvas" width="1100" height="320"></canvas>
+  </div>
+</div>
+
+<script>
+// ─── State ──────────────────────────────────────────────────────────
+let playing = false;
+let animId = null;
+let t = 0;
+let y = 1.0, v = 0.0;
+const dt = 1 / 600;        // integration timestep (RK4)
+const stepsPerFrame = 10;   // integration steps per animation frame
+let history = [];           // [{t, y}]
+const MAX_HISTORY = 60000;
+
+// ─── DOM refs ───────────────────────────────────────────────────────
+const simCanvas  = document.getElementById('simCanvas');
+const plotCanvas = document.getElementById('plotCanvas');
+const simCtx  = simCanvas.getContext('2d');
+const plotCtx = plotCanvas.getContext('2d');
+
+const sliderM = document.getElementById('sliderM');
+const sliderG = document.getElementById('sliderG');
+const sliderK = document.getElementById('sliderK');
+const valM = document.getElementById('valM');
+const valG = document.getElementById('valG');
+const valK = document.getElementById('valK');
+
+function getM()  { return parseFloat(sliderM.value); }
+function getG()  { return parseFloat(sliderG.value); }
+function getK()  { return parseFloat(sliderK.value); }
+function getY0() { return parseFloat(document.getElementById('inputY0').value) || 0; }
+function getV0() { return parseFloat(document.getElementById('inputV0').value) || 0; }
+function getF0() { return parseFloat(document.getElementById('inputF0').value) || 0; }
+function getOmega() { return parseFloat(document.getElementById('inputOmega').value) || 1; }
+function getStepTime() { return parseFloat(document.getElementById('inputStepTime').value) || 1; }
+
+sliderM.oninput = () => { valM.textContent = parseFloat(sliderM.value).toFixed(1); if (!playing) drawAll(); };
+sliderG.oninput = () => { valG.textContent = parseFloat(sliderG.value).toFixed(1); if (!playing) drawAll(); };
+sliderK.oninput = () => { valK.textContent = parseFloat(sliderK.value).toFixed(1); if (!playing) drawAll(); };
+
+// ─── Force ──────────────────────────────────────────────────────────
+function updateForceUI() {
+  const ft = document.getElementById('forceType').value;
+  const fp = document.getElementById('forceParams');
+  const freqRow = document.getElementById('freqRow');
+  const ampRow  = document.getElementById('ampRow');
+  const stepRow = document.getElementById('stepTimeRow');
+
+  fp.style.display = ft === 'none' ? 'none' : 'block';
+  freqRow.style.display = ['sine','cosine','square','sawtooth'].includes(ft) ? 'flex' : 'none';
+  stepRow.style.display = ft === 'step' ? 'flex' : 'none';
+  ampRow.style.display  = ft === 'none' ? 'none' : 'flex';
+}
+
+function F(tt) {
+  const ft = document.getElementById('forceType').value;
+  const F0 = getF0(), omega = getOmega(), t0 = getStepTime();
+  switch (ft) {
+    case 'none': return 0;
+    case 'constant': return F0;
+    case 'sine': return F0 * Math.sin(omega * tt);
+    case 'cosine': return F0 * Math.cos(omega * tt);
+    case 'square': {
+      const period = (2 * Math.PI) / omega;
+      return F0 * (((tt % period) < period / 2) ? 1 : -1);
+    }
+    case 'sawtooth': {
+      const period = (2 * Math.PI) / omega;
+      return F0 * (2 * ((tt % period) / period) - 1);
+    }
+    case 'impulse': return (tt < dt * 2) ? F0 / (dt * 2) : 0;
+    case 'step': return tt >= t0 ? F0 : 0;
+    default: return 0;
+  }
+}
+
+// ─── ODE: y'' = (F(t) - gamma*y' - k*y) / m ───────────────────────
+function accel(tt, yy, vv) {
+  return (F(tt) - getG() * vv - getK() * yy) / getM();
+}
+
+// RK4 integration step
+function rk4Step() {
+  const h = dt;
+  const k1v = accel(t, y, v);
+  const k1y = v;
+
+  const k2v = accel(t + h/2, y + k1y*h/2, v + k1v*h/2);
+  const k2y = v + k1v*h/2;
+
+  const k3v = accel(t + h/2, y + k2y*h/2, v + k2v*h/2);
+  const k3y = v + k2v*h/2;
+
+  const k4v = accel(t + h, y + k3y*h, v + k3v*h);
+  const k4y = v + k3v*h;
+
+  y += (h / 6) * (k1y + 2*k2y + 2*k3y + k4y);
+  v += (h / 6) * (k1v + 2*k2v + 2*k3v + k4v);
+  t += h;
+}
+
+// ─── Regime detection ───────────────────────────────────────────────
+function getRegime() {
+  const m = getM(), g = getG(), k = getK();
+  const disc = g * g - 4 * m * k;
+  if (g === 0) return 'undamped';
+  if (Math.abs(disc) < 1e-6) return 'critically damped';
+  if (disc > 0) return 'overdamped';
+  return 'underdamped';
+}
+
+// ─── Drawing: Spring Animation ──────────────────────────────────────
+function resizeCanvases() {
+  const dpr = window.devicePixelRatio || 1;
+  for (const c of [simCanvas, plotCanvas]) {
+    const rect = c.getBoundingClientRect();
+    c.width = rect.width * dpr;
+    c.height = rect.height * dpr;
+    c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+}
+window.addEventListener('resize', () => { resizeCanvases(); drawAll(); });
+
+function drawSim() {
+  const W = simCanvas.getBoundingClientRect().width;
+  const H = simCanvas.getBoundingClientRect().height;
+  const ctx = simCtx;
+  ctx.clearRect(0, 0, W, H);
+
+  // coordinate mapping: y in meters → pixels. 1 m ≈ 80 px
+  const scale = 80;
+  const wallX = 60;
+  const restX = W / 2;          // equilibrium position of left face of block
+  const blockW = 54, blockH = 54;
+  const massX = restX + y * scale;  // left face of block
+
+  // Clamp drawing so block doesn't go off screen
+  const drawMassX = Math.max(wallX + 20, Math.min(W - blockW - 10, massX));
+
+  // ── Wall ──
+  ctx.fillStyle = '#37474f';
+  ctx.fillRect(wallX - 12, H/2 - 50, 12, 100);
+  // Wall hatch lines
+  ctx.strokeStyle = '#546e7a';
+  ctx.lineWidth = 1.2;
+  for (let i = -50; i < 100; i += 10) {
+    ctx.beginPath();
+    ctx.moveTo(wallX - 12, H/2 - 50 + i);
+    ctx.lineTo(wallX - 2, H/2 - 50 + i + 12);
+    ctx.stroke();
+  }
+
+  // ── Ground line ──
+  ctx.strokeStyle = '#2a2f3c';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(wallX - 14, H/2 + 50);
+  ctx.lineTo(W - 20, H/2 + 50);
+  ctx.stroke();
+
+  // ── Spring (zigzag) ──
+  const springStartX = wallX;
+  const springEndX = drawMassX;
+  const springY = H / 2;
+  const nCoils = 14;
+  const springLen = springEndX - springStartX;
+  const coilW = springLen / (nCoils + 2);  // extra half-coils at ends
+  const amplitude = 12;
+
+  ctx.strokeStyle = getSpringColor(springLen, (restX - wallX));
+  ctx.lineWidth = 2.2;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(springStartX, springY);
+  ctx.lineTo(springStartX + coilW * 0.5, springY);
+  for (let i = 0; i < nCoils; i++) {
+    const x = springStartX + coilW * (i + 1);
+    const dir = (i % 2 === 0) ? -1 : 1;
+    ctx.lineTo(x, springY + dir * amplitude);
+  }
+  ctx.lineTo(springEndX - coilW * 0.5, springY);
+  ctx.lineTo(springEndX, springY);
+  ctx.stroke();
+
+  // ── Mass block ──
+  const grad = ctx.createLinearGradient(drawMassX, springY - blockH/2, drawMassX, springY + blockH/2);
+  grad.addColorStop(0, '#546e7a');
+  grad.addColorStop(0.5, '#37474f');
+  grad.addColorStop(1, '#263238');
+  ctx.fillStyle = grad;
+  roundRect(ctx, drawMassX, springY - blockH / 2, blockW, blockH, 4);
+  ctx.fill();
+  ctx.strokeStyle = '#78909c';
+  ctx.lineWidth = 1.2;
+  roundRect(ctx, drawMassX, springY - blockH / 2, blockW, blockH, 4);
+  ctx.stroke();
+
+  // Mass label
+  ctx.fillStyle = '#b0bec5';
+  ctx.font = '600 11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('m', drawMassX + blockW / 2, springY);
+
+  // ── Displacement arrow ──
+  if (Math.abs(y) > 0.02) {
+    const arrowY = springY + blockH / 2 + 22;
+    const baseX = restX + blockW / 2;
+    const tipX = drawMassX + blockW / 2;
+    ctx.strokeStyle = '#4fc3f7';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(baseX, arrowY);
+    ctx.lineTo(tipX, arrowY);
+    ctx.stroke();
+    // arrowhead
+    const dir = tipX > baseX ? 1 : -1;
+    ctx.fillStyle = '#4fc3f7';
+    ctx.beginPath();
+    ctx.moveTo(tipX, arrowY);
+    ctx.lineTo(tipX - dir * 6, arrowY - 4);
+    ctx.lineTo(tipX - dir * 6, arrowY + 4);
+    ctx.closePath();
+    ctx.fill();
+    // dashed line from equilibrium
+    ctx.setLineDash([3, 3]);
+    ctx.strokeStyle = '#4fc3f740';
+    ctx.beginPath();
+    ctx.moveTo(baseX, springY - blockH/2 - 5);
+    ctx.lineTo(baseX, arrowY + 8);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // label
+    ctx.fillStyle = '#4fc3f7';
+    ctx.font = '500 10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('y = ' + y.toFixed(2) + ' m', (baseX + tipX) / 2, arrowY + 14);
+  }
+
+  // ── Equilibrium marker ──
+  ctx.fillStyle = '#ffffff20';
+  ctx.font = '400 9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('eq', restX + blockW/2, springY - blockH/2 - 10);
+}
+
+function getSpringColor(currentLen, restLen) {
+  const ratio = currentLen / restLen;
+  if (ratio < 0.6) return '#ef5350';       // very compressed – red
+  if (ratio < 0.85) return '#ffa726';      // compressed – orange
+  if (ratio > 1.4) return '#ef5350';       // very stretched – red
+  if (ratio > 1.15) return '#ffa726';      // stretched – orange
+  return '#66bb6a';                         // near equilibrium – green
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+// ─── Drawing: Plot ──────────────────────────────────────────────────
+function drawPlot() {
+  const W = plotCanvas.getBoundingClientRect().width;
+  const H = plotCanvas.getBoundingClientRect().height;
+  const ctx = plotCtx;
+  ctx.clearRect(0, 0, W, H);
+
+  const pad = { top: 22, bottom: 36, left: 56, right: 20 };
+  const pw = W - pad.left - pad.right;
+  const ph = H - pad.top - pad.bottom;
+
+  // Auto-scale
+  let tMax = Math.max(5, t + 0.5);
+  let yMin = -1, yMax = 1;
+  if (history.length > 0) {
+    for (const p of history) {
+      if (p.y < yMin) yMin = p.y;
+      if (p.y > yMax) yMax = p.y;
+    }
+    const margin = Math.max(0.1, (yMax - yMin) * 0.15);
+    yMin -= margin;
+    yMax += margin;
+    // Symmetrize around 0 if close
+    if (yMin > -0.3 && yMax < 0.3) { yMin = -0.5; yMax = 0.5; }
+  }
+
+  function tx(tt) { return pad.left + (tt / tMax) * pw; }
+  function ty(yy) { return pad.top + (1 - (yy - yMin) / (yMax - yMin)) * ph; }
+
+  // ── Grid ──
+  ctx.strokeStyle = '#1e2230';
+  ctx.lineWidth = 1;
+
+  // Horizontal grid lines & labels
+  const yTicks = niceScale(yMin, yMax, 6);
+  ctx.font = '400 10px "JetBrains Mono", monospace';
+  ctx.fillStyle = '#5a6080';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  for (const val of yTicks) {
+    const py = ty(val);
+    if (py < pad.top - 2 || py > H - pad.bottom + 2) continue;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, py);
+    ctx.lineTo(W - pad.right, py);
+    ctx.stroke();
+    ctx.fillText(val.toFixed(2), pad.left - 6, py);
+  }
+
+  // Vertical grid lines & labels
+  const tTicks = niceScale(0, tMax, 8);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  for (const val of tTicks) {
+    const px = tx(val);
+    if (px < pad.left - 2 || px > W - pad.right + 2) continue;
+    ctx.beginPath();
+    ctx.moveTo(px, pad.top);
+    ctx.lineTo(px, H - pad.bottom);
+    ctx.stroke();
+    ctx.fillText(val.toFixed(1), px, H - pad.bottom + 5);
+  }
+
+  // Zero line
+  if (yMin < 0 && yMax > 0) {
+    ctx.strokeStyle = '#3a4060';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, ty(0));
+    ctx.lineTo(W - pad.right, ty(0));
+    ctx.stroke();
+  }
+
+  // Axes labels
+  ctx.fillStyle = '#6a7090';
+  ctx.font = '500 10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('t (s)', pad.left + pw / 2, H - 12);
+  ctx.save();
+  ctx.translate(14, pad.top + ph / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textBaseline = 'middle';
+  ctx.fillText('y (m)', 0, 0);
+  ctx.restore();
+
+  // ── Data line ──
+  if (history.length > 1) {
+    ctx.strokeStyle = '#4fc3f7';
+    ctx.lineWidth = 1.8;
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    // Downsample if too many points
+    const step = Math.max(1, Math.floor(history.length / (pw * 2)));
+    let first = true;
+    for (let i = 0; i < history.length; i += step) {
+      const px = tx(history[i].t);
+      const py = ty(history[i].y);
+      if (first) { ctx.moveTo(px, py); first = false; }
+      else ctx.lineTo(px, py);
+    }
+    // always include last point
+    const last = history[history.length - 1];
+    ctx.lineTo(tx(last.t), ty(last.y));
+    ctx.stroke();
+
+    // Glow
+    ctx.strokeStyle = '#4fc3f730';
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    first = true;
+    for (let i = 0; i < history.length; i += step) {
+      const px = tx(history[i].t);
+      const py = ty(history[i].y);
+      if (first) { ctx.moveTo(px, py); first = false; }
+      else ctx.lineTo(px, py);
+    }
+    ctx.lineTo(tx(last.t), ty(last.y));
+    ctx.stroke();
+
+    // Current point dot
+    ctx.fillStyle = '#4fc3f7';
+    ctx.beginPath();
+    ctx.arc(tx(last.t), ty(last.y), 3.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff60';
+    ctx.beginPath();
+    ctx.arc(tx(last.t), ty(last.y), 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Border
+  ctx.strokeStyle = '#2a2f3c';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(pad.left, pad.top, pw, ph);
+}
+
+function niceScale(lo, hi, maxTicks) {
+  const range = hi - lo;
+  if (range <= 0) return [lo];
+  const rough = range / maxTicks;
+  const mag = Math.pow(10, Math.floor(Math.log10(rough)));
+  let step;
+  const norm = rough / mag;
+  if (norm <= 1.5) step = 1 * mag;
+  else if (norm <= 3) step = 2 * mag;
+  else if (norm <= 7) step = 5 * mag;
+  else step = 10 * mag;
+
+  const ticks = [];
+  let start = Math.ceil(lo / step) * step;
+  for (let v = start; v <= hi + step * 0.01; v += step) {
+    ticks.push(parseFloat(v.toFixed(10)));
+  }
+  return ticks;
+}
+
+// ─── Update info ────────────────────────────────────────────────────
+function updateInfo() {
+  document.getElementById('infoT').textContent = t.toFixed(2);
+  document.getElementById('infoY').textContent = y.toFixed(3);
+  document.getElementById('infoV').textContent = v.toFixed(3);
+  document.getElementById('infoRegime').textContent = getRegime();
+}
+
+// ─── Animation loop ─────────────────────────────────────────────────
+function frame() {
+  for (let i = 0; i < stepsPerFrame; i++) {
+    rk4Step();
+    // Thin the history for very long runs
+    if (history.length < MAX_HISTORY) {
+      history.push({ t, y });
+    } else if (history.length % 2 === 0) {
+      history.push({ t, y });
+    }
+  }
+  drawAll();
+  updateInfo();
+  if (playing) animId = requestAnimationFrame(frame);
+}
+
+function drawAll() {
+  drawSim();
+  drawPlot();
+  updateInfo();
+}
+
+// ─── Controls ───────────────────────────────────────────────────────
+function togglePlay() {
+  if (!playing) {
+    playing = true;
+    document.getElementById('playBtn').classList.add('active');
+    document.getElementById('playBtn').textContent = '▶ Playing';
+    animId = requestAnimationFrame(frame);
+  } else {
+    playing = false;
+    document.getElementById('playBtn').classList.remove('active');
+    document.getElementById('playBtn').textContent = '▶ Play';
+    if (animId) cancelAnimationFrame(animId);
+  }
+}
+
+function stopSim() {
+  playing = false;
+  document.getElementById('playBtn').classList.remove('active');
+  document.getElementById('playBtn').textContent = '▶ Play';
+  if (animId) cancelAnimationFrame(animId);
+}
+
+function resetSim() {
+  stopSim();
+  t = 0;
+  y = getY0();
+  v = getV0();
+  history = [{ t, y }];
+  drawAll();
+}
+
+// ─── Init ───────────────────────────────────────────────────────────
+function init() {
+  resizeCanvases();
+  resetSim();
+}
+
+window.addEventListener('load', init);
+</script>
+</body>
+</html>
