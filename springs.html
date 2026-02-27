@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mass-Spring System Simulator</title>
+<title>Mass-Spring Simulation</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -121,7 +121,6 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.7rem;
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: 1.5px;
     color: var(--text-dim);
     margin-bottom: 14px;
@@ -213,6 +212,19 @@
 
   .input-field:focus { border-color: var(--accent); }
 
+  .param-input {
+    width: 62px;
+    color: var(--accent2);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  /* Hide spinner arrows for cleaner look */
+  .param-input::-webkit-inner-spin-button,
+  .param-input::-webkit-outer-spin-button {
+    opacity: 0.4;
+  }
+
   select {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.78rem;
@@ -265,7 +277,7 @@
 <body>
 <div class="app">
   <header>
-    <h1>Mass–Spring System Simulator</h1>
+    <h1>Mass–Spring Simulation</h1>
     <div class="equation">m y'' + γ y' + k y = F(t)</div>
   </header>
 
@@ -292,17 +304,17 @@
       <div class="param-row">
         <span class="param-label">m <span class="unit">kg</span></span>
         <input type="range" id="sliderM" min="0.1" max="20" step="0.1" value="2">
-        <span class="param-value" id="valM">2.0</span>
+        <input type="number" class="input-field param-input" id="valM" value="2.0" min="0.1" max="20" step="0.1">
       </div>
       <div class="param-row">
         <span class="param-label">γ <span class="unit">Ns/m</span></span>
         <input type="range" id="sliderG" min="0" max="20" step="0.1" value="1">
-        <span class="param-value" id="valG">1.0</span>
+        <input type="number" class="input-field param-input" id="valG" value="1.0" min="0" max="20" step="0.1">
       </div>
       <div class="param-row">
         <span class="param-label">k <span class="unit">N/m</span></span>
         <input type="range" id="sliderK" min="0.1" max="100" step="0.1" value="10">
-        <span class="param-value" id="valK">10.0</span>
+        <input type="number" class="input-field param-input" id="valK" value="10.0" min="0.1" max="100" step="0.1">
       </div>
     </div>
 
@@ -378,18 +390,29 @@ const valM = document.getElementById('valM');
 const valG = document.getElementById('valG');
 const valK = document.getElementById('valK');
 
-function getM()  { return parseFloat(sliderM.value); }
-function getG()  { return parseFloat(sliderG.value); }
-function getK()  { return parseFloat(sliderK.value); }
+function getM()  { return parseFloat(valM.value) || 0.1; }
+function getG()  { return parseFloat(valG.value) || 0; }
+function getK()  { return parseFloat(valK.value) || 0.1; }
 function getY0() { return parseFloat(document.getElementById('inputY0').value) || 0; }
 function getV0() { return parseFloat(document.getElementById('inputV0').value) || 0; }
 function getF0() { return parseFloat(document.getElementById('inputF0').value) || 0; }
 function getOmega() { return parseFloat(document.getElementById('inputOmega').value) || 1; }
 function getStepTime() { return parseFloat(document.getElementById('inputStepTime').value) || 1; }
 
-sliderM.oninput = () => { valM.textContent = parseFloat(sliderM.value).toFixed(1); if (!playing) drawAll(); };
-sliderG.oninput = () => { valG.textContent = parseFloat(sliderG.value).toFixed(1); if (!playing) drawAll(); };
-sliderK.oninput = () => { valK.textContent = parseFloat(sliderK.value).toFixed(1); if (!playing) drawAll(); };
+sliderM.oninput = () => { valM.value = parseFloat(sliderM.value).toFixed(1); if (!playing) drawAll(); };
+sliderG.oninput = () => { valG.value = parseFloat(sliderG.value).toFixed(1); if (!playing) drawAll(); };
+sliderK.oninput = () => { valK.value = parseFloat(sliderK.value).toFixed(1); if (!playing) drawAll(); };
+
+valM.oninput = () => { const v = clampVal(valM, 0.1, 20); sliderM.value = v; if (!playing) drawAll(); };
+valG.oninput = () => { const v = clampVal(valG, 0, 20); sliderG.value = v; if (!playing) drawAll(); };
+valK.oninput = () => { const v = clampVal(valK, 0.1, 100); sliderK.value = v; if (!playing) drawAll(); };
+
+function clampVal(el, min, max) {
+  let v = parseFloat(el.value);
+  if (isNaN(v)) return min;
+  v = Math.min(max, Math.max(min, v));
+  return v;
+}
 
 // ─── Force ──────────────────────────────────────────────────────────
 function updateForceUI() {
@@ -596,6 +619,122 @@ function drawSim() {
   ctx.font = '400 9px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.fillText('eq', restX + blockW/2, springY - blockH/2 - 10);
+
+  // ── External force arrow on mass ──
+  const Fnow = F(t);
+  if (Math.abs(Fnow) > 0.01) {
+    const maxArrowLen = 80;
+    // Scale: normalize against F0 (or 10N fallback) so arrow is readable
+    const F0ref = Math.max(Math.abs(getF0()), 5);
+    const arrowLen = Math.min(maxArrowLen, Math.abs(Fnow) / F0ref * 50);
+    const arrowDir = Fnow > 0 ? 1 : -1;
+    const arrowY = springY;
+    const arrowStartX = drawMassX + blockW / 2;
+    const arrowEndX = arrowStartX + arrowDir * (blockW / 2 + arrowLen + 6);
+    const arrowBodyStart = arrowStartX + arrowDir * (blockW / 2 + 4);
+
+    // Arrow shaft
+    ctx.strokeStyle = '#ffa726';
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(arrowBodyStart, arrowY);
+    ctx.lineTo(arrowEndX, arrowY);
+    ctx.stroke();
+
+    // Arrowhead
+    ctx.fillStyle = '#ffa726';
+    ctx.beginPath();
+    ctx.moveTo(arrowEndX + arrowDir * 2, arrowY);
+    ctx.lineTo(arrowEndX - arrowDir * 7, arrowY - 5);
+    ctx.lineTo(arrowEndX - arrowDir * 7, arrowY + 5);
+    ctx.closePath();
+    ctx.fill();
+
+    // Label
+    ctx.fillStyle = '#ffa726';
+    ctx.font = '600 10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = arrowDir > 0 ? 'top' : 'top';
+    ctx.fillText('F=' + Fnow.toFixed(1) + 'N', (arrowBodyStart + arrowEndX) / 2, arrowY - 18);
+  }
+
+  // ── F(t) mini-plot (top-right corner) ──
+  const ft = document.getElementById('forceType').value;
+  if (ft !== 'none') {
+    const mpW = 120, mpH = 48;
+    const mpX = W - mpW - 16, mpY = 12;
+    const mpPad = 4;
+
+    // Background
+    ctx.fillStyle = '#0c0e13c0';
+    roundRect(ctx, mpX, mpY, mpW, mpH, 4);
+    ctx.fill();
+    ctx.strokeStyle = '#ffa72640';
+    ctx.lineWidth = 1;
+    roundRect(ctx, mpX, mpY, mpW, mpH, 4);
+    ctx.stroke();
+
+    // Label
+    ctx.fillStyle = '#ffa726';
+    ctx.font = '600 8px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText('F(t)', mpX + 4, mpY + 2);
+
+    // Compute mini-plot range: look ahead from 0 to max(t+2, 5)
+    const plotT0 = 0;
+    const plotT1 = Math.max(t + 0.5, 3);
+    const nSamples = Math.round(mpW - 2 * mpPad);
+    let fMin = 0, fMax = 0;
+    const fSamples = [];
+    for (let i = 0; i <= nSamples; i++) {
+      const st = plotT0 + (i / nSamples) * (plotT1 - plotT0);
+      const fv = F(st);
+      fSamples.push({ t: st, f: fv });
+      if (fv < fMin) fMin = fv;
+      if (fv > fMax) fMax = fv;
+    }
+    const fRange = Math.max(0.1, fMax - fMin);
+    fMin -= fRange * 0.1;
+    fMax += fRange * 0.1;
+    const updatedRange = fMax - fMin;
+
+    // Zero line
+    const zeroY = mpY + mpPad + 12 + (1 - (0 - fMin) / updatedRange) * (mpH - 2 * mpPad - 12);
+    ctx.strokeStyle = '#ffa72625';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(mpX + mpPad, zeroY);
+    ctx.lineTo(mpX + mpW - mpPad, zeroY);
+    ctx.stroke();
+
+    // F(t) line
+    ctx.strokeStyle = '#ffa726';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    for (let i = 0; i <= nSamples; i++) {
+      const px = mpX + mpPad + i;
+      const py = mpY + mpPad + 12 + (1 - (fSamples[i].f - fMin) / updatedRange) * (mpH - 2 * mpPad - 12);
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+
+    // Current time marker
+    const cursorFrac = (t - plotT0) / (plotT1 - plotT0);
+    if (cursorFrac >= 0 && cursorFrac <= 1) {
+      const cx = mpX + mpPad + cursorFrac * nSamples;
+      ctx.strokeStyle = '#ffffff40';
+      ctx.lineWidth = 0.7;
+      ctx.setLineDash([2, 2]);
+      ctx.beginPath();
+      ctx.moveTo(cx, mpY + mpPad + 10);
+      ctx.lineTo(cx, mpY + mpH - mpPad);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
 }
 
 function getSpringColor(currentLen, restLen) {
