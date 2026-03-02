@@ -393,6 +393,7 @@ function toggleTheme() {
   document.documentElement.classList.toggle('light', lightMode);
   document.getElementById('themeBtn').textContent = lightMode ? '🌙 Dark Mode' : '☀ Light Mode';
   drawAll();
+  scheduleURLUpdate();
 }
 
 // Canvas colors that must change with theme (CSS vars don't apply to canvas)
@@ -1055,12 +1056,64 @@ function resetSim() {
   v = getV0();
   history = [{ t, y }];
   drawAll();
+  scheduleURLUpdate();
 }
+
+// ─── URL State ──────────────────────────────────────────────────────
+function settingsToURL() {
+  const p = new URLSearchParams();
+  p.set('m', parseFloat(sliderM.value).toFixed(1));
+  p.set('g', parseFloat(sliderG.value).toFixed(1));
+  p.set('k', parseFloat(sliderK.value).toFixed(1));
+  p.set('y0', document.getElementById('inputY0').value);
+  p.set('v0', document.getElementById('inputV0').value);
+  p.set('force', document.getElementById('forceType').value);
+  p.set('F0', document.getElementById('inputF0').value);
+  p.set('w', document.getElementById('inputOmega').value);
+  p.set('t0', document.getElementById('inputStepTime').value);
+  if (lightMode) p.set('theme', 'light');
+  window.history.replaceState(null, '', '?' + p.toString());
+}
+
+function loadFromURL() {
+  const p = new URLSearchParams(window.location.search);
+  if (!p.toString()) return;
+  if (p.has('m'))  { sliderM.value = p.get('m'); valM.value = p.get('m'); }
+  if (p.has('g'))  { sliderG.value = p.get('g'); valG.value = p.get('g'); }
+  if (p.has('k'))  { sliderK.value = p.get('k'); valK.value = p.get('k'); }
+  if (p.has('y0')) { document.getElementById('inputY0').value = p.get('y0'); }
+  if (p.has('v0')) { document.getElementById('inputV0').value = p.get('v0'); }
+  if (p.has('force')) {
+    document.getElementById('forceType').value = p.get('force');
+    updateForceUI();
+  }
+  if (p.has('F0')) { document.getElementById('inputF0').value = p.get('F0'); }
+  if (p.has('w'))  { document.getElementById('inputOmega').value = p.get('w'); }
+  if (p.has('t0')) { document.getElementById('inputStepTime').value = p.get('t0'); }
+  if (p.get('theme') === 'light' && !lightMode) { toggleTheme(); }
+}
+
+let urlTimer = null;
+function scheduleURLUpdate() {
+  clearTimeout(urlTimer);
+  urlTimer = setTimeout(settingsToURL, 300);
+}
+
+// Wire URL updates to all inputs
+for (const el of [sliderM, sliderG, sliderK, valM, valG, valK]) {
+  el.addEventListener('input', scheduleURLUpdate);
+}
+for (const id of ['inputY0','inputV0','inputF0','inputOmega','inputStepTime']) {
+  document.getElementById(id).addEventListener('input', scheduleURLUpdate);
+}
+document.getElementById('forceType').addEventListener('change', scheduleURLUpdate);
 
 // ─── Init ───────────────────────────────────────────────────────────
 function init() {
+  loadFromURL();
   resizeCanvases();
   resetSim();
+  settingsToURL();
 }
 
 window.addEventListener('load', init);
