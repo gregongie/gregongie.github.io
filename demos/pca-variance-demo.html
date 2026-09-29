@@ -1,0 +1,1494 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PCA and Variance in a Direction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap">
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['$$', '$$']],
+    macros: {
+      R: '\\mathbb{R}',
+      ip: ['\\left\\langle #1, #2 \\right\\rangle', 2],
+      tp: '^{\\mathsf{T}}',
+      vtp: '^{\\;\\mathsf{T}}'
+    }
+  },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<style>
+:root {
+  color-scheme: light;
+  /* slide palette (unit1.tex) */
+  --struct: #003366;      /* darkblue */
+  --red: #990000;         /* darkred: mean */
+  --orange: #A35200;      /* darkorange!80!black: u, v1 */
+  --green: #006633;       /* darkgreen: v2 */
+  --purple: #660099;      /* darkpurple: v3 */
+  --focus: #3366CC;       /* lightblue */
+
+  --bg: #FAFBFD;
+  --plot: #FFFFFF;
+  --panel: #F2F5F8;       /* ~ darkblue!4 */
+  --blk-title: #DEE4EB;   /* ~ darkblue!13 */
+  --blk-body: #F5F7FA;
+  --ink: #16202B;
+  --muted: #5A6878;
+  --rule: #B3C2D1;        /* darkblue!30 */
+  --line: #DCE3EA;
+  --grid: rgba(0, 51, 102, 0.07);
+  --pt: #93A9C0;          /* ~ darkblue!40 */
+  --foot: #003366;
+  --projline: rgba(22, 32, 43, 0.22);
+  --orange-fill: rgba(163, 82, 0, 0.11);
+  --halo: rgba(255, 255, 255, 0.88);
+  --cm-lo: #E6EDF4;
+  --cm-mid: #EBB27A;
+  --cm-hi: #A35200;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --struct: #93B7DE;
+    --red: #F07C7C;
+    --orange: #F2A65A;
+    --green: #4FC48F;
+    --purple: #C39AF2;
+    --focus: #7FA7E8;
+    --bg: #0E141B;
+    --plot: #121A23;
+    --panel: #17202A;
+    --blk-title: #1F2B38;
+    --blk-body: #151D26;
+    --ink: #E2E8EF;
+    --muted: #97A5B5;
+    --rule: #3A4C60;
+    --line: #243140;
+    --grid: rgba(147, 183, 222, 0.07);
+    --pt: #5B7796;
+    --foot: #A9C8EC;
+    --projline: rgba(226, 232, 239, 0.2);
+    --orange-fill: rgba(242, 166, 90, 0.13);
+    --halo: rgba(18, 26, 35, 0.88);
+    --cm-lo: #1A2531;
+    --cm-mid: #7E5330;
+    --cm-hi: #F5AE62;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --struct: #93B7DE;
+  --red: #F07C7C;
+  --orange: #F2A65A;
+  --green: #4FC48F;
+  --purple: #C39AF2;
+  --focus: #7FA7E8;
+  --bg: #0E141B;
+  --plot: #121A23;
+  --panel: #17202A;
+  --blk-title: #1F2B38;
+  --blk-body: #151D26;
+  --ink: #E2E8EF;
+  --muted: #97A5B5;
+  --rule: #3A4C60;
+  --line: #243140;
+  --grid: rgba(147, 183, 222, 0.07);
+  --pt: #5B7796;
+  --foot: #A9C8EC;
+  --projline: rgba(226, 232, 239, 0.2);
+  --orange-fill: rgba(242, 166, 90, 0.13);
+  --halo: rgba(18, 26, 35, 0.88);
+  --cm-lo: #1A2531;
+  --cm-mid: #7E5330;
+  --cm-hi: #F5AE62;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.55 "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.page { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 32px 64px; }
+@media (max-width: 480px) { .page { padding-inline: 16px; } }
+
+h1 {
+  margin: 0; font-size: 34px; line-height: 1.15; font-weight: 700;
+  color: var(--struct); text-wrap: balance;
+}
+h1 + .rule, h2 { border-bottom: 1.5px solid var(--rule); }
+h1 + .rule { margin: 8px 0 14px; }
+h2 {
+  margin: 0 0 8px; padding-bottom: 4px; font-size: 24px; font-weight: 700;
+  color: var(--struct); text-wrap: balance;
+}
+p { margin: 0; }
+.lead { font-size: 17px; }
+.lead + .lead { margin-top: 10px; }
+.intro { display: grid; gap: 16px; }
+
+.block { max-width: 760px; width: 100%; margin-inline: auto; border-radius: 8px; overflow: hidden; background: var(--blk-body); }
+.block-title { padding: 5px 14px; background: var(--blk-title); color: var(--struct); font-weight: 700; }
+.block-body { padding: 4px 14px 8px; }
+.block-body mjx-container[display="true"] { margin: 0.5em 0 !important; }
+
+.demo { margin-top: 48px; display: grid; gap: 14px; }
+.demo > .hint { max-width: 78ch; }
+.demo-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start;
+}
+@media (max-width: 860px) { .demo-grid { grid-template-columns: minmax(0, 1fr); } }
+.stage { display: grid; gap: 12px; min-width: 0; }
+
+.plot { margin: 0; background: var(--plot); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+canvas { display: block; width: 100%; }
+.cv-main { aspect-ratio: 16 / 11; touch-action: none; cursor: crosshair; }
+.cv-main3 { aspect-ratio: 5 / 4; touch-action: none; cursor: move; }
+.cv-proj { height: 220px; }
+.checks + h3 { margin-top: 8px; }
+figcaption {
+  padding: 7px 12px 9px; border-top: 1px solid var(--line);
+  font-size: 14px; color: var(--muted);
+}
+.key { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.key span { white-space: nowrap; }
+.sw { display: inline-block; vertical-align: middle; margin-right: 5px; }
+.sw-dot { width: 8px; height: 8px; border-radius: 50%; }
+.sw-line { width: 18px; height: 0; border-top: 2px solid; }
+.sw-dash { width: 18px; height: 0; border-top: 2px dashed; }
+
+.side {
+  display: grid; gap: 16px; padding: 14px 16px 16px;
+  background: var(--panel); border-radius: 8px; font-size: 15px;
+}
+.side h3 {
+  margin: 0 0 6px; font-size: 12.5px; font-weight: 700;
+  letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted);
+}
+.side section { display: grid; gap: 6px; }
+.readout { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; align-items: baseline; }
+.num { font-variant-numeric: tabular-nums; }
+.big { font-size: 26px; font-weight: 600; color: var(--orange); font-variant-numeric: tabular-nums; line-height: 1.2; }
+.small { font-size: 13.5px; color: var(--muted); }
+.c-red { color: var(--red); }
+.c-orange { color: var(--orange); }
+.c-green { color: var(--green); }
+.c-purple { color: var(--purple); }
+.c-blue { color: var(--struct); }
+
+.btns { display: flex; flex-wrap: wrap; gap: 6px; }
+button, select {
+  font: inherit; font-size: 14px; color: var(--ink); background: var(--plot);
+  border: 1px solid var(--rule); border-radius: 5px; padding: 4px 10px; cursor: pointer;
+}
+button:hover, select:hover { border-color: var(--struct); }
+button[aria-pressed="true"] { background: var(--struct); border-color: var(--struct); color: var(--bg); }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+select { width: 100%; }
+.chk { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.chk input { accent-color: var(--struct); margin: 0; }
+.checks { display: grid; gap: 3px; }
+.slider { display: grid; grid-template-columns: 1fr auto; gap: 0 10px; align-items: center; }
+.slider label { font-size: 14px; }
+.slider output { font-size: 14px; font-variant-numeric: tabular-nums; color: var(--muted); }
+.slider input { grid-column: 1 / -1; width: 100%; accent-color: var(--orange); margin: 2px 0 4px; }
+
+.mini { background: var(--plot); border: 1px solid var(--line); border-radius: 5px; }
+.cv-curve { height: 128px; cursor: pointer; touch-action: none; }
+.cv-meter { height: 72px; }
+.ramp-bar { height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--cm-lo), var(--cm-mid), var(--cm-hi)); }
+.ramp-labels { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); }
+.plot3 { position: relative; }
+.sph-inset {
+  position: absolute; top: 10px; right: 10px; width: clamp(96px, 20%, 150px);
+  display: grid; gap: 4px; padding: 6px 8px 4px; border-radius: 6px;
+  background: var(--halo); border: 1px solid var(--line); pointer-events: none;
+}
+.sph-title { font-size: 12.5px; color: var(--muted); text-align: center; white-space: nowrap; }
+.cv-sph { width: 100%; aspect-ratio: 1; }
+
+.mat { display: flex; align-items: center; gap: 8px; }
+.mat-t {
+  position: relative; display: grid; gap: 1px 12px; padding: 2px 9px;
+  font-variant-numeric: tabular-nums; font-size: 14.5px; text-align: right;
+}
+.mat-t::before, .mat-t::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 5px;
+  border: 1.5px solid var(--ink);
+}
+.mat-t::before { left: 0; border-right: none; }
+.mat-t::after { right: 0; border-left: none; }
+.eigs { display: grid; grid-template-columns: auto 1fr; gap: 1px 10px; font-size: 14.5px; }
+
+.try { max-width: 860px; }
+.try h3 { margin: 0 0 6px; font-size: 17px; color: var(--struct); }
+.try ol { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+
+</style>
+
+<div class="page">
+
+<header class="intro">
+  <div>
+    <h1>PCA and variance in a direction</h1>
+    <div class="rule"></div>
+    <p class="lead">
+      <strong>Principal component analysis (PCA)</strong> looks for the directions along which a dataset varies the most.
+      The data are points \(\vec x_1, \ldots, \vec x_m \in \R^n\), and their mean
+      \(\vec\mu = \frac{1}{m}\sum_{i=1}^m \vec x_i\) is the center of the point cloud. For a unit vector \(\vec u\),
+      project each centered data vector \(\vec x_i - \vec\mu\) onto the \(\vec u\)-axis through \(\vec\mu\). The signed
+      projection lengths \(\ip{\vec u}{\vec x_i - \vec\mu}\) are just numbers, so we can ask how spread out they are.
+      Their variance is \(\operatorname{var}(\vec u)\), defined below.
+    </p>
+    <p class="lead">
+      The <strong>goal of PCA</strong> is to find orthogonal unit directions that maximize \(\operatorname{var}(\vec u)\).
+      The first maximizes it over all unit vectors, the second over unit vectors orthogonal to the first, and so on.
+      These directions turn out to be the eigenvectors \(\vec v_1, \vec v_2, \ldots\) of the sample covariance matrix
+      \(C\), and the variances along them are its eigenvalues \(\lambda_1 \ge \lambda_2 \ge \cdots\). In the demos
+      below, drag \(\vec u\) and watch the spread change. A density estimate shows how the projections are distributed,
+      and the \(\pm\sigma\) marks show \(\sigma = \sqrt{\operatorname{var}(\vec u)}\).
+    </p>
+  </div>
+  <div class="block">
+    <div class="block-title">Definition</div>
+    <div class="block-body">
+      The <strong class="c-red">variance of the data in the unit direction \(\vec u\)</strong>
+      is the average squared projection length
+      $$\operatorname{var}(\vec u) \;=\; \frac{1}{m-1}\sum_{i=1}^m \ip{\vec u}{\vec x_i - \vec\mu}^2 \;=\; \vec u\vtp C\,\vec u ,
+        \qquad C \;=\; \frac{1}{m-1}\sum_{i=1}^m (\vec x_i - \vec\mu)(\vec x_i - \vec\mu)\vtp .$$
+    </div>
+  </div>
+</header>
+
+<!-- ============================ 2D ============================ -->
+<section class="demo" id="demo2">
+  <h2>Data in \(\R^2\)</h2>
+  <p class="hint">
+    Drag the arrowhead of <span class="c-orange">\(\vec u\)</span>, or click anywhere in the plot to point
+    \(\vec u\) there. Click a data point to show its projection. Hover over a dot in
+    either panel to see the matching dot in the other.
+  </p>
+  <div class="demo-grid">
+    <div class="stage">
+      <figure class="plot">
+        <canvas id="cv2" class="cv-main" role="img" aria-label="Scatter plot of the data with the unit vector u, the u-axis through the mean, and projections of each point onto that axis."></canvas>
+        <figcaption class="key">
+          <span><i class="sw sw-dot" style="background:var(--pt)"></i>data \(\vec x_i\)</span>
+          <span><i class="sw sw-dot" style="background:var(--red)"></i>mean \(\vec\mu\)</span>
+          <span><i class="sw sw-line" style="border-color:var(--orange)"></i>unit vector \(\vec u\)</span>
+          <span><i class="sw sw-dash" style="border-color:var(--orange)"></i>\(\vec u\)-axis through \(\vec\mu\)</span>
+          <span><i class="sw sw-dot" style="background:var(--foot)"></i>projections onto the axis</span>
+        </figcaption>
+      </figure>
+      <figure class="plot">
+        <canvas id="pj2" class="cv-proj" role="img" aria-label="Number line of signed projection lengths with a density estimate and plus or minus sigma marks."></canvas>
+        <figcaption>
+          The \(\vec u\)-axis laid flat: each dot sits at \(t_i = \ip{\vec u}{\vec x_i - \vec\mu}\), so
+          \(\vec\mu\) lands at \(0\) and \(\vec\mu + \vec u\) at \(1\). The curve is a kernel density
+          estimate of the \(t_i\) (height is density, so the area under it is 1). You can switch to a histogram or overlay
+          the Gaussian \(\mathcal N\big(0, \operatorname{var}(\vec u)\big)\).
+        </figcaption>
+      </figure>
+    </div>
+
+    <aside class="side" aria-label="Controls and readouts for the 2D demo">
+      <section>
+        <h3>Direction</h3>
+        <div class="readout">
+          <span class="c-orange">\(\vec u\)</span><span class="num" id="u2">—</span>
+        </div>
+        <div class="slider">
+          <label for="theta2">Angle of \(\vec u\)</label>
+          <output id="theta2-out" for="theta2">—</output>
+          <input type="range" id="theta2" min="-180" max="180" step="0.5" value="105">
+        </div>
+        <div class="btns">
+          <button type="button" id="aim2-1">Aim at <span class="c-orange">\(\vec v_1\)</span></button>
+          <button type="button" id="aim2-2">Aim at <span class="c-green">\(\vec v_2\)</span></button>
+          <button type="button" id="spin2" aria-pressed="false">Sweep \(\vec u\)</button>
+        </div>
+      </section>
+
+      <section>
+        <h3>Spread</h3>
+        <div class="readout">
+          <span>\(\operatorname{var}(\vec u)\)</span><span class="big" id="var2">—</span>
+          <span>\(\sigma = \sqrt{\operatorname{var}(\vec u)}\)</span><span class="num" id="sd2">—</span>
+        </div>
+      </section>
+
+      <section>
+        <h3>\(\operatorname{var}(\vec u)\) as \(\vec u\) turns</h3>
+        <canvas id="curve2" class="cv-curve mini" role="img" aria-label="Variance as a function of the angle of u. Click to set the angle."></canvas>
+        <p class="small">Angles \(\theta\) and \(\theta + 180^\circ\) give \(\pm\vec u\) and the same variance. Click the curve to jump there.</p>
+      </section>
+
+      <section>
+        <h3>Upper panel</h3>
+        <div class="checks">
+          <label class="chk"><input type="checkbox" id="lines2" checked> Projection lines</label>
+          <label class="chk"><input type="checkbox" id="pc2"> Principal components and 1σ ellipse</label>
+        </div>
+        <h3>Lower panel</h3>
+        <div class="checks">
+          <label class="chk"><input type="checkbox" id="kde2" checked> Kernel density estimate</label>
+          <label class="chk"><input type="checkbox" id="hist2"> Histogram</label>
+          <label class="chk"><input type="checkbox" id="gauss2"> Gaussian with variance \(\operatorname{var}(\vec u)\)</label>
+          <label class="chk"><input type="checkbox" id="sig2" checked> \(\pm\sigma\) marks (both panels)</label>
+        </div>
+      </section>
+
+      <section>
+        <h3>Data</h3>
+        <select id="data2" aria-label="Dataset for the 2D demo">
+          <option value="slide">Example points (m = 34)</option>
+          <option value="round">Nearly round cloud (m = 60)</option>
+          <option value="thin">Thin cloud (m = 60)</option>
+          <option value="two">Two clusters (m = 60)</option>
+        </select>
+        <div class="mat"><span>\(C =\)</span><div class="mat-t" id="C2" style="grid-template-columns: repeat(2, auto)"></div></div>
+        <div class="eigs">
+          <span class="c-orange">\(\lambda_1\)</span><span class="num" id="l2-1">—</span>
+          <span class="c-green">\(\lambda_2\)</span><span class="num" id="l2-2">—</span>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <div class="try">
+    <h3>Things to try</h3>
+    <ol>
+      <li>Turn \(\vec u\) until the dots in the lower panel spread out as much as possible. Then turn on
+        <em>Principal components</em>: the maximizer is \(\vec v_1\), and the largest possible variance is \(\lambda_1\).</li>
+      <li>Turn \(\vec u\) a quarter-turn away from \(\vec v_1\). Now the spread is as small as possible,
+        \(\operatorname{var}(\vec u) = \lambda_2\). The curve in the sidebar never goes below \(\lambda_2\) or above \(\lambda_1\).</li>
+      <li>With the ellipse showing, look where the ellipse's shadow on the \(\vec u\)-axis ends. It ends exactly at the
+        \(\pm\sigma\) marks for every \(\vec u\), because the half-width of the ellipse in direction \(\vec u\) is
+        \(\sqrt{\vec u\vtp C\vec u}\).</li>
+      <li>Flip \(\vec u\) to \(-\vec u\). Every dot mirrors across \(0\), and so does the density, but \(\sigma\) stays the same.</li>
+      <li>Try the <em>Two clusters</em> data with the Gaussian turned on, and aim \(\vec u\) along the line joining the clusters.
+        The density estimate shows two bumps, but the Gaussian has only one, because all it knows is \(\operatorname{var}(\vec u)\).
+        The variance measures spread whatever shape the data have. The Gaussian is a picture of that one number, not a model of the data.</li>
+      <li>Try the <em>Nearly round</em> data. When \(\lambda_1 \approx \lambda_2\), no direction stands out much,
+        and the curve in the sidebar is nearly flat.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================ 3D ============================ -->
+<section class="demo" id="demo3">
+  <h2>Data in \(\R^3\)</h2>
+  <p class="hint">
+    Now \(\vec u\) can be any point on the unit sphere. Drag the arrowhead of <span class="c-orange">\(\vec u\)</span>
+    to move it, or use the sliders. Drag anywhere else in the 3D view to rotate the camera, and click a point
+    to select it. The small sphere in the corner colors each direction by its variance and turns with the view.
+    Since \(\vec u\) and \(-\vec u\) have the same variance, its front half shows every direction.
+  </p>
+  <div class="demo-grid">
+    <div class="stage">
+      <figure class="plot plot3">
+        <div class="sph-inset" aria-hidden="true">
+          <div class="sph-title">\(\operatorname{var}(\vec u)\) by direction</div>
+          <canvas id="sph3" class="cv-sph"></canvas>
+          <div class="ramp-bar"></div>
+          <div class="ramp-labels"><span>\(\lambda_3\)</span><span>\(\lambda_1\)</span></div>
+        </div>
+        <canvas id="cv3" class="cv-main3" role="img" aria-label="Rotatable 3D point cloud with the unit vector u and the u-axis through the mean."></canvas>
+        <figcaption class="key">
+          <span><i class="sw sw-dot" style="background:var(--pt)"></i>data \(\vec x_i\)</span>
+          <span><i class="sw sw-dot" style="background:var(--red)"></i>mean \(\vec\mu\)</span>
+          <span><i class="sw sw-line" style="border-color:var(--orange)"></i>unit vector \(\vec u\)</span>
+          <span><i class="sw sw-dash" style="border-color:var(--orange)"></i>\(\vec u\)-axis</span>
+          <span><i class="sw sw-dash" style="border-color:var(--muted)"></i>unit sphere around \(\vec\mu\)</span>
+        </figcaption>
+      </figure>
+      <figure class="plot">
+        <canvas id="pj3" class="cv-proj" role="img" aria-label="Number line of signed projection lengths for the 3D data with a density estimate and plus or minus sigma marks."></canvas>
+        <figcaption>
+          Projections \(t_i = \ip{\vec u}{\vec x_i - \vec\mu}\) of all \(m\) points, with a kernel density
+          estimate on top. Height is density.
+        </figcaption>
+      </figure>
+    </div>
+
+    <aside class="side" aria-label="Controls and readouts for the 3D demo">
+      <section>
+        <h3>Spread</h3>
+        <div class="readout">
+          <span class="c-orange">\(\vec u\)</span><span class="num" id="u3">—</span>
+          <span>\(\operatorname{var}(\vec u)\)</span><span class="big" id="var3">—</span>
+          <span>\(\sigma\)</span><span class="num" id="sd3">—</span>
+        </div>
+        <canvas id="meter3" class="cv-meter mini" role="img" aria-label="Where var(u) sits between the eigenvalues."></canvas>
+      </section>
+
+      <section>
+        <h3>Direction</h3>
+        <div class="slider">
+          <label for="az3">Azimuth</label><output id="az3-out" for="az3">—</output>
+          <input type="range" id="az3" min="-180" max="180" step="0.5" value="0">
+        </div>
+        <div class="slider">
+          <label for="el3">Elevation</label><output id="el3-out" for="el3">—</output>
+          <input type="range" id="el3" min="-90" max="90" step="0.5" value="0">
+        </div>
+        <div class="btns">
+          <button type="button" id="aim3-1">\(\vec v_1\)</button>
+          <button type="button" id="aim3-2">\(\vec v_2\)</button>
+          <button type="button" id="aim3-3">\(\vec v_3\)</button>
+        </div>
+      </section>
+
+      <section>
+        <h3>Lower panel</h3>
+        <div class="checks">
+          <label class="chk"><input type="checkbox" id="kde3" checked> Kernel density estimate</label>
+          <label class="chk"><input type="checkbox" id="hist3"> Histogram</label>
+          <label class="chk"><input type="checkbox" id="gauss3"> Gaussian with variance \(\operatorname{var}(\vec u)\)</label>
+          <label class="chk"><input type="checkbox" id="sig3" checked> \(\pm\sigma\) marks (both panels)</label>
+        </div>
+        <h3>3D view</h3>
+        <div class="checks">
+          <label class="chk"><input type="checkbox" id="sphere3" checked> Unit sphere</label>
+          <label class="chk"><input type="checkbox" id="lines3"> Projection lines</label>
+          <label class="chk"><input type="checkbox" id="pc3"> Principal components</label>
+        </div>
+        <div class="btns">
+          <button type="button" id="spin3" aria-pressed="false">Spin view</button>
+          <button type="button" id="reset3">Reset view</button>
+        </div>
+      </section>
+
+      <section>
+        <h3>Data</h3>
+        <select id="data3" aria-label="Dataset for the 3D demo">
+          <option value="cigar">Cigar: one long axis (m = 150)</option>
+          <option value="pancake">Pancake: two long axes (m = 150)</option>
+          <option value="round">Nearly round (m = 150)</option>
+        </select>
+        <div class="mat"><span>\(C =\)</span><div class="mat-t" id="C3" style="grid-template-columns: repeat(3, auto)"></div></div>
+        <div class="eigs">
+          <span class="c-orange">\(\lambda_1\)</span><span class="num" id="l3-1">—</span>
+          <span class="c-green">\(\lambda_2\)</span><span class="num" id="l3-2">—</span>
+          <span class="c-purple">\(\lambda_3\)</span><span class="num" id="l3-3">—</span>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <div class="try">
+    <h3>Things to try</h3>
+    <ol>
+      <li>On the sphere in the corner of the 3D view, the brightest spots are \(\pm\vec v_1\) (largest variance, \(\lambda_1\)) and the darkest are
+        \(\pm\vec v_3\) (smallest variance, \(\lambda_3\)). Turn on <em>Principal components</em> to check.</li>
+      <li>Aim at \(\vec v_2\), then nudge \(\vec u\) around it. Moving toward \(\vec v_1\) raises the variance, and
+        moving toward \(\vec v_3\) lowers it. So \(\vec v_2\) is a <em>saddle point</em> of \(\vec u\vtp C\vec u\) on the
+        sphere, neither a max nor a min. That's why the second principal component is defined as a max over directions
+        <em>orthogonal</em> to \(\vec v_1\).</li>
+      <li>Switch to the <em>Pancake</em> data. With \(\lambda_1 \approx \lambda_2\), every direction in the plane of the pancake
+        gives almost the same spread, and the sphere shows a bright band instead of two bright spots.</li>
+      <li>Rotate the view until you look straight down the \(\vec u\)-axis. The arrow shrinks to a dot, but the lower panel
+        doesn't change, because the projections depend only on \(\vec u\) and not on where you view from.</li>
+    </ol>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+
+/* ================= helpers ================= */
+const $ = id => document.getElementById(id);
+const DEG = Math.PI / 180;
+const MF = '"STIX Two Text", "STIX Two Math", "Times New Roman", serif';
+const SF = '"Source Sans 3", system-ui, sans-serif';
+const dpr = () => Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+function fmt(v, d = 3) {
+  if (Math.abs(v) < 0.5 * Math.pow(10, -d)) v = 0;
+  return v.toFixed(d).replace('-', '−');
+}
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function gauss(r) {
+  let a = 0; while (a === 0) a = r();
+  return Math.sqrt(-2 * Math.log(a)) * Math.cos(2 * Math.PI * r());
+}
+const dot = (a, b) => a.reduce((s, v, i) => s + v * b[i], 0);
+const norm = a => { const L = Math.hypot(...a) || 1; return a.map(v => v / L); };
+function quad(C, u) {
+  let s = 0;
+  for (let a = 0; a < u.length; a++) for (let b = 0; b < u.length; b++) s += u[a] * C[a][b] * u[b];
+  return s;
+}
+
+/* symmetric eigendecomposition (cyclic Jacobi), eigenvalues descending */
+function eigSym(A) {
+  const n = A.length, a = A.map(r => r.slice());
+  const V = [...Array(n)].map((_, i) => [...Array(n)].map((_, j) => (i === j ? 1 : 0)));
+  for (let sweep = 0; sweep < 60; sweep++) {
+    let off = 0;
+    for (let p = 0; p < n; p++) for (let q = p + 1; q < n; q++) off += a[p][q] * a[p][q];
+    if (off < 1e-22) break;
+    for (let p = 0; p < n - 1; p++) for (let q = p + 1; q < n; q++) {
+      if (Math.abs(a[p][q]) < 1e-18) continue;
+      const th = (a[q][q] - a[p][p]) / (2 * a[p][q]);
+      const t = (th >= 0 ? 1 : -1) / (Math.abs(th) + Math.sqrt(th * th + 1));
+      const c = 1 / Math.sqrt(t * t + 1), s = t * c;
+      for (let k = 0; k < n; k++) { const x = a[k][p], y = a[k][q]; a[k][p] = c * x - s * y; a[k][q] = s * x + c * y; }
+      for (let k = 0; k < n; k++) { const x = a[p][k], y = a[q][k]; a[p][k] = c * x - s * y; a[q][k] = s * x + c * y; }
+      for (let k = 0; k < n; k++) { const x = V[k][p], y = V[k][q]; V[k][p] = c * x - s * y; V[k][q] = s * x + c * y; }
+    }
+  }
+  const idx = [...Array(n).keys()].sort((i, j) => a[j][j] - a[i][i]);
+  const vals = idx.map(i => a[i][i]);
+  const vecs = idx.map(i => {
+    const v = V.map(row => row[i]);
+    let k = 0; v.forEach((x, j) => { if (Math.abs(x) > Math.abs(v[k])) k = j; });
+    return v[k] < 0 ? v.map(x => -x) : v;
+  });
+  return { vals, vecs };
+}
+function stats(X) {
+  const m = X.length, n = X[0].length, mu = Array(n).fill(0);
+  X.forEach(x => x.forEach((v, j) => { mu[j] += v / m; }));
+  const Y = X.map(x => x.map((v, j) => v - mu[j]));
+  const C = [...Array(n)].map(() => Array(n).fill(0));
+  Y.forEach(y => { for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) C[a][b] += y[a] * y[b] / (m - 1); });
+  const E = eigSym(C);
+  const R = Math.max(...Y.map(y => Math.hypot(...y)));
+  return { m, n, mu, Y, C, lam: E.vals, V: E.vecs, R };
+}
+
+/* ================= theme colors ================= */
+const COL = {};
+let CM = [];
+const TOK = ['ink', 'muted', 'rule', 'line', 'struct', 'grid', 'pt', 'foot', 'projline', 'red', 'orange',
+  'orange-fill', 'green', 'purple', 'halo', 'plot', 'cm-lo', 'cm-mid', 'cm-hi'];
+function hexRgb(h) {
+  h = h.replace('#', '');
+  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+}
+function readColors() {
+  const cs = getComputedStyle(document.documentElement);
+  TOK.forEach(k => { COL[k] = cs.getPropertyValue('--' + k).trim(); });
+  CM = [hexRgb(COL['cm-lo']), hexRgb(COL['cm-mid']), hexRgb(COL['cm-hi'])];
+}
+function cmap(f) {
+  f = clamp(f, 0, 1);
+  const [a, b, g] = f < 0.5 ? [CM[0], CM[1], f / 0.5] : [CM[1], CM[2], (f - 0.5) / 0.5];
+  return [a[0] + (b[0] - a[0]) * g, a[1] + (b[1] - a[1]) * g, a[2] + (b[2] - a[2]) * g];
+}
+
+/* ================= canvas drawing ================= */
+function prep(cv) {
+  const d = dpr(), w = cv.clientWidth, h = cv.clientHeight;
+  const W = Math.round(w * d), H = Math.round(h * d);
+  if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+  const ctx = cv.getContext('2d');
+  ctx.setTransform(d, 0, 0, d, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+  return { ctx, w, h };
+}
+function ptr(cv, e) { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+
+function disc(ctx, x, y, r, fill) { ctx.fillStyle = fill; ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI); ctx.fill(); }
+function ring(ctx, x, y, r, stroke, lw = 1.5) { ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI); ctx.stroke(); }
+function seg(ctx, x0, y0, x1, y1, stroke, lw = 1, dash = null) {
+  ctx.save(); ctx.strokeStyle = stroke; ctx.lineWidth = lw; if (dash) ctx.setLineDash(dash);
+  ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); ctx.restore();
+}
+/* stealth-style arrow like TikZ's >=Stealth */
+function arrow(ctx, x0, y0, x1, y1, color, lw = 2, head = 11) {
+  const dx = x1 - x0, dy = y1 - y0, L = Math.hypot(dx, dy);
+  if (L < 0.5) return;
+  const ux = dx / L, uy = dy / L, hl = Math.min(head, L * 0.7), hw = hl * 0.42;
+  const bx = x1 - ux * hl, by = y1 - uy * hl, nx = bx + ux * hl * 0.3, ny = by + uy * hl * 0.3;
+  ctx.save();
+  ctx.strokeStyle = color; ctx.lineWidth = lw; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(nx, ny); ctx.stroke();
+  ctx.fillStyle = color; ctx.beginPath();
+  ctx.moveTo(x1, y1); ctx.lineTo(bx - uy * hw, by + ux * hw); ctx.lineTo(nx, ny); ctx.lineTo(bx + uy * hw, by - ux * hw);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+/* curly brace from P0 to P1 bulging toward normal (-uy, ux) * sign(amp) */
+function brace(ctx, x0, y0, x1, y1, amp, raise, color) {
+  const dx = x1 - x0, dy = y1 - y0, L = Math.hypot(dx, dy);
+  if (L < 14) return null;
+  const ux = dx / L, uy = dy / L, sg = Math.sign(amp) || 1, nx = -uy * sg, ny = ux * sg;
+  const a = Math.min(Math.abs(amp), L / 4) / 2, r = raise;
+  const P = (s, h) => [x0 + ux * s + nx * (h + r), y0 + uy * s + ny * (h + r)];
+  const mid = L / 2;
+  ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 1.1; ctx.beginPath();
+  ctx.moveTo(...P(0, 0));
+  ctx.quadraticCurveTo(...P(0, a), ...P(a, a));
+  ctx.lineTo(...P(mid - a, a));
+  ctx.quadraticCurveTo(...P(mid, a), ...P(mid, 2 * a));
+  ctx.quadraticCurveTo(...P(mid, a), ...P(mid + a, a));
+  ctx.lineTo(...P(L - a, a));
+  ctx.quadraticCurveTo(...P(L, a), ...P(L, 0));
+  ctx.stroke(); ctx.restore();
+  return { tip: P(mid, 2 * a), nx, ny };
+}
+
+/* tiny math typesetter for canvas labels.
+   tokens: 'text' (upright) | {v:'u'} vector (italic + arrow) | {i:'σ'} italic
+   options on objects: sub, subUp (upright subscript), c (color) */
+function mathLayout(ctx, toks, size) {
+  const ops = []; let x = 0;
+  for (const t of toks) {
+    if (typeof t === 'string') {
+      ctx.font = `${size}px ${MF}`;
+      ops.push({ k: 't', s: t, x, f: ctx.font, dy: 0 });
+      x += ctx.measureText(t).width;
+      continue;
+    }
+    const s = t.v || t.i;
+    ctx.font = `italic ${size}px ${MF}`;
+    const w = ctx.measureText(s).width;
+    ops.push({ k: 't', s, x, f: ctx.font, dy: 0, c: t.c });
+    if (t.v) ops.push({ k: 'a', x0: x + w * 0.1, x1: x + w + size * 0.08, dy: -size * 0.74, c: t.c, size });
+    x += w + (t.v ? size * 0.08 : 0);
+    if (t.sub) {
+      const ss = size * 0.68;
+      ctx.font = `${t.subUp ? '' : 'italic '}${ss}px ${MF}`;
+      ops.push({ k: 't', s: t.sub, x: x + size * 0.02, f: ctx.font, dy: size * 0.24, c: t.c });
+      x += ctx.measureText(t.sub).width + size * 0.06;
+    }
+  }
+  return { ops, w: x };
+}
+function drawMath(ctx, toks, x, y, o = {}) {
+  const size = o.size || 17, color = o.color || COL.ink;
+  const L = mathLayout(ctx, toks, size);
+  const x0 = o.align === 'center' ? x - L.w / 2 : o.align === 'right' ? x - L.w : x;
+  ctx.save(); ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left'; ctx.lineJoin = 'round';
+  for (const halo of (o.halo === false ? [false] : [true, false])) {
+    for (const op of L.ops) {
+      const c = op.c || color;
+      if (op.k === 't') {
+        ctx.font = op.f;
+        if (halo) { ctx.strokeStyle = COL.halo; ctx.lineWidth = 4; ctx.strokeText(op.s, x0 + op.x, y + op.dy); }
+        else { ctx.fillStyle = c; ctx.fillText(op.s, x0 + op.x, y + op.dy); }
+      } else {
+        const ay = y + op.dy, a = x0 + op.x0, b = x0 + op.x1, h = op.size * 0.12;
+        ctx.strokeStyle = halo ? COL.halo : c; ctx.lineWidth = halo ? 4 : Math.max(1, op.size * 0.055);
+        ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(a, ay); ctx.lineTo(b, ay);
+        ctx.moveTo(b - h * 1.4, ay - h); ctx.lineTo(b, ay); ctx.lineTo(b - h * 1.4, ay + h); ctx.stroke();
+      }
+    }
+  }
+  ctx.restore();
+  return L.w;
+}
+const V_ = (s, extra) => Object.assign({ v: s }, extra || {});
+const LBL = {
+  u: [V_('u')], mu: [V_('μ')], xi: [V_('x', { sub: 'i' })],
+  xmu: [V_('x', { sub: 'i' }), ' − ', V_('μ')],
+  proj: ['⟨', V_('u'), ', ', V_('x', { sub: 'i' }), ' − ', V_('μ'), '⟩'],
+  v: k => [V_('v', { sub: String(k), subUp: true })],
+  lam: k => [{ i: 'λ', sub: String(k), subUp: true }]
+};
+
+/* ================= shared: projection number line ================= */
+function quantile(sorted, q) {
+  const k = (sorted.length - 1) * q, a = Math.floor(k), b = Math.ceil(k);
+  return sorted[a] + (sorted[b] - sorted[a]) * (k - a);
+}
+function drawProj(cv, o) {
+  const { ctx, w, h } = prep(cv);
+  const base = h - 50, top = 12, cx = w / 2;
+  const s = Math.min(o.scale || Infinity, (w / 2 - 16) / o.T);
+  const X = t => cx + s * t;
+  const tmax = (w / 2) / s;
+  const m = o.t.length, v = o.v, sig = Math.sqrt(v), S = o.show;
+  // fixed height scale per dataset: the narrowest Gaussian (variance lambda_min) peaks at ~77% height
+  const ky = (base - top) / (1.3 / Math.sqrt(2 * Math.PI * o.lamMin));
+  const Yd = d => base - ky * d;
+  const sorted = o.t.slice().sort((a, b) => a - b);
+  const iqr = quantile(sorted, 0.75) - quantile(sorted, 0.25);
+
+  // ticks
+  const lab = s >= 110 ? 0.5 : s >= 45 ? 1 : 2;
+  const minor = lab / 2;
+  ctx.save();
+  ctx.font = `12px ${SF}`; ctx.textAlign = 'center'; ctx.fillStyle = COL.muted;
+  for (let k = Math.ceil(-tmax / minor); k <= Math.floor(tmax / minor); k++) {
+    const t = k * minor, px = X(t);
+    const major = Math.abs(t / lab - Math.round(t / lab)) < 1e-9;
+    seg(ctx, px, base, px, base + (major ? 6 : 3.5), COL.muted, 1);
+    if (major) ctx.fillText(fmt(t, lab < 1 ? 1 : 0), px, base + 19);
+  }
+  ctx.restore();
+  drawMath(ctx, LBL.mu, X(0), base + 38, { size: 15, color: COL.red, align: 'center' });
+  if (s > 55 && X(1) < w - 30) {
+    drawMath(ctx, [V_('μ', { c: COL.red }), ' + ', V_('u', { c: COL.orange })], X(1), base + 38, { size: 15, align: 'center' });
+  }
+
+  // density curves (clipped to the plot area)
+  ctx.save(); ctx.beginPath(); ctx.rect(0, 0, w, base); ctx.clip();
+  const curve = (f, fill, stroke, lw, dash) => {
+    ctx.beginPath(); ctx.moveTo(0, base);
+    for (let px = 0; px <= w; px += 1.5) ctx.lineTo(px, Yd(f((px - cx) / s)));
+    ctx.lineTo(w, base); ctx.closePath();
+    if (fill) { ctx.save(); ctx.globalAlpha = 0.13; ctx.fillStyle = fill; ctx.fill(); ctx.restore(); }
+    ctx.beginPath();
+    for (let px = 0; px <= w; px += 1.5) { const y = Yd(f((px - cx) / s)); px === 0 ? ctx.moveTo(px, y) : ctx.lineTo(px, y); }
+    ctx.save(); ctx.strokeStyle = stroke; ctx.lineWidth = lw; if (dash) ctx.setLineDash(dash); ctx.stroke(); ctx.restore();
+  };
+  if (S.hist) {
+    // Freedman-Diaconis bin width, bin edges at multiples of the width
+    const wb = Math.max(2 * iqr * Math.pow(m, -1 / 3), 0.03);
+    const counts = new Map();
+    o.t.forEach(t => { const k = Math.floor(t / wb); counts.set(k, (counts.get(k) || 0) + 1); });
+    counts.forEach((c, k) => {
+      const x0 = X(k * wb), x1 = X((k + 1) * wb), y = Yd(c / (m * wb));
+      ctx.save(); ctx.globalAlpha = 0.2; ctx.fillStyle = COL.struct; ctx.fillRect(x0, y, x1 - x0, base - y); ctx.restore();
+      ctx.save(); ctx.globalAlpha = 0.7; ctx.strokeStyle = COL.struct; ctx.lineWidth = 1; ctx.strokeRect(x0 + 0.5, y + 0.5, x1 - x0 - 1, base - y); ctx.restore();
+    });
+  }
+  if (S.kde) {
+    // Gaussian kernel, Silverman's rule-of-thumb bandwidth
+    const bw = Math.max(0.9 * Math.min(sig, iqr / 1.34 || sig) * Math.pow(m, -0.2), 1e-3);
+    const c0 = 1 / (m * bw * Math.sqrt(2 * Math.PI));
+    curve(t => { let d = 0; for (const ti of o.t) { const z = (t - ti) / bw; d += Math.exp(-0.5 * z * z); } return d * c0; },
+      S.hist ? null : COL.struct, COL.struct, 2, null);
+  }
+  if (S.gauss) {
+    curve(t => Math.exp(-t * t / (2 * v)) / Math.sqrt(2 * Math.PI * v), S.kde || S.hist ? null : COL.orange, COL.orange, 2, S.kde || S.hist ? [6, 4] : null);
+  }
+  ctx.restore();
+
+  // +/- sigma
+  if (S.sig) {
+    const yb = top + 30;
+    seg(ctx, X(-sig), base, X(-sig), yb - 6, COL.orange, 1.2, [2, 3]);
+    seg(ctx, X(sig), base, X(sig), yb - 6, COL.orange, 1.2, [2, 3]);
+    if (s * sig > 22) {
+      arrow(ctx, X(0), yb, X(sig), yb, COL.orange, 1.2, 7);
+      seg(ctx, X(0), yb - 4, X(0), yb + 4, COL.orange, 1.2);
+      drawMath(ctx, [{ i: 'σ' }], X(sig / 2), yb - 5, { size: 15, color: COL.orange, align: 'center' });
+    }
+  }
+
+  // the u-axis laid flat, with u from 0 to 1
+  seg(ctx, 0, base, w, base, COL.orange, 1.2, [6, 5]);
+  arrow(ctx, X(0), base, X(1), base, COL.orange, 2.6, 11);
+
+  // projected points, all on the axis; overlaps read as darker spots
+  const pos = o.t.map(t => [X(t), base]);
+  ctx.save(); ctx.globalAlpha = 0.5;
+  pos.forEach(p => disc(ctx, p[0], p[1], 3.6, COL.foot));
+  ctx.restore();
+  disc(ctx, X(0), base, 4.2, COL.red);
+
+  if (o.hover != null && o.hover !== o.sel) ring(ctx, pos[o.hover][0], base, 7, COL.muted, 1.5);
+  if (o.sel != null) {
+    const px = pos[o.sel][0];
+    ring(ctx, px, base, 7, COL.struct, 2);
+    seg(ctx, px, base - 8, px, base - 16, COL.struct, 1.2);
+    drawMath(ctx, LBL.xi, px, base - 20, { size: 15, color: COL.struct, align: 'center' });
+  }
+
+  // readout (top left) and legend (top right)
+  drawMath(ctx, ['var(', V_('u'), ') = ' + fmt(v, 3)], 12, 22, { size: 16 });
+  drawMath(ctx, [{ i: 'σ' }, ' = ' + fmt(sig, 3)], 12, 42, { size: 16, color: COL.muted });
+  const leg = [];
+  if (S.kde) leg.push(['kernel density estimate', 'line', COL.struct]);
+  if (S.hist) leg.push(['histogram', 'box', COL.struct]);
+  if (S.gauss) leg.push(['Gaussian with variance var(u)', S.kde || S.hist ? 'dash' : 'line', COL.orange]);
+  ctx.save(); ctx.font = `12.5px ${SF}`; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  leg.forEach(([txt, kind, col], k) => {
+    const y = 16 + k * 17, xr = w - 12, tw = ctx.measureText(txt).width, x0 = xr - tw - 26;
+    ctx.fillStyle = COL.halo; ctx.fillRect(x0 - 4, y - 8, tw + 34, 16);
+    ctx.fillStyle = COL.muted; ctx.fillText(txt, xr, y);
+    if (kind === 'box') {
+      ctx.save(); ctx.globalAlpha = 0.25; ctx.fillStyle = col; ctx.fillRect(x0, y - 5, 18, 10); ctx.restore();
+      ctx.strokeStyle = col; ctx.lineWidth = 1; ctx.strokeRect(x0 + 0.5, y - 4.5, 17, 9);
+    } else seg(ctx, x0, y, x0 + 18, y, col, 2, kind === 'dash' ? [4, 3] : null);
+  });
+  ctx.restore();
+
+  cv._pos = pos;
+}
+function nearest(pos, x, y, rmax) {
+  let best = null, bd = rmax * rmax;
+  pos.forEach((p, i) => { const d = (p[0] - x) ** 2 + (p[1] - y) ** 2; if (d < bd) { bd = d; best = i; } });
+  return best;
+}
+function fillMatrix(el, C) {
+  el.innerHTML = '';
+  C.forEach(row => row.forEach(v => { const s = document.createElement('span'); s.textContent = fmt(v, 3); el.appendChild(s); }));
+}
+
+/* ======================================================================
+   2D demo
+   ====================================================================== */
+const SLIDE = [[1.99,1.87],[2.17,1.68],[1.56,1.26],[3.15,2.71],[3.12,2.62],[2.6,2.2],[0.74,1.07],[2.63,2.35],[1.21,0.39],[1.64,1.22],[2.57,2.08],[2.86,2.06],[2.48,2.2],[1.41,1.92],[2.54,2.56],[1.92,1.32],[2.03,1.66],[2.78,2.36],[2.11,1.37],[1.63,1.88],[1.57,1.45],[2.94,1.79],[2.09,2.26],[0.67,0.55],[2.37,1.62],[2.73,2.2],[0.91,1.19],[2.68,2.56],[3.44,2.9],[2.65,1.64],[2.93,2.13],[2.16,1.29],[1.59,1.15],[3.77,2.19]];
+
+function makeData2(kind) {
+  if (kind === 'slide') return SLIDE.map(p => p.slice());
+  if (kind === 'two') {
+    const r = mulberry32(13), d = [Math.cos(20 * DEG), Math.sin(20 * DEG)];
+    return Array.from({ length: 60 }, (_, i) => {
+      const sg = i % 2 ? 1 : -1;
+      return [2.2 + sg * 0.95 * d[0] + 0.25 * gauss(r), 1.8 + sg * 0.95 * d[1] + 0.25 * gauss(r)];
+    });
+  }
+  if (kind === 'round') {
+    // whiten a random sample, then rescale so its sample covariance has eigenvalues exactly 0.40 and 0.34
+    const r = mulberry32(7), Z = stats(Array.from({ length: 60 }, () => [gauss(r), gauss(r)])), E = eigSym(Z.C);
+    const c = Math.cos(25 * DEG), s = Math.sin(25 * DEG);
+    return Z.Y.map(y => {
+      const a = Math.sqrt(0.40 / E.vals[0]) * dot(E.vecs[0], y), b = Math.sqrt(0.34 / E.vals[1]) * dot(E.vecs[1], y);
+      return [2.2 + c * a - s * b, 1.8 + s * a + c * b];
+    });
+  }
+  const r = mulberry32(11);
+  const [l1, l2, ang] = [0.85, 0.012, -30];
+  const c = Math.cos(ang * DEG), s = Math.sin(ang * DEG);
+  return Array.from({ length: 60 }, () => {
+    const a = Math.sqrt(l1) * gauss(r), b = Math.sqrt(l2) * gauss(r);
+    return [2.2 + c * a - s * b, 1.8 + s * a + c * b];
+  });
+}
+
+const S2 = { theta: 105 * DEG, sel: null, hover: null, pc: false, lines: true, spin: false, drag: false,
+  show: { kde: true, hist: false, gauss: false, sig: true } };
+const cv2 = $('cv2'), pj2 = $('pj2'), curve2 = $('curve2');
+
+function load2(kind) {
+  S2.X = makeData2(kind);
+  S2.st = stats(S2.X);
+  S2.sel = kind === 'slide' ? 28 : null;
+  S2.hover = null;
+  fillMatrix($('C2'), S2.st.C);
+  $('l2-1').textContent = fmt(S2.st.lam[0], 3);
+  $('l2-2').textContent = fmt(S2.st.lam[1], 3);
+  req2();
+}
+const u2 = () => [Math.cos(S2.theta), Math.sin(S2.theta)];
+
+function view2(w, h) {
+  const { mu } = S2.st;
+  let x0 = mu[0] - 1.25, x1 = mu[0] + 1.25, y0 = mu[1] - 1.25, y1 = mu[1] + 1.25;
+  S2.X.forEach(p => { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); });
+  const pad = 0.3; x0 -= pad; x1 += pad; y0 -= pad; y1 += pad;
+  const s = Math.min(w / (x1 - x0), h / (y1 - y0));
+  const mx = (x0 + x1) / 2, my = (y0 + y1) / 2;
+  return {
+    s,
+    P: p => [w / 2 + s * (p[0] - mx), h / 2 - s * (p[1] - my)],
+    inv: (a, b) => [mx + (a - w / 2) / s, my - (b - h / 2) / s],
+    x0: mx - w / 2 / s, x1: mx + w / 2 / s, y0: my - h / 2 / s, y1: my + h / 2 / s
+  };
+}
+
+function draw2() {
+  const { ctx, w, h } = prep(cv2);
+  const V = view2(w, h); S2.view = V;
+  const st = S2.st, mu = st.mu, u = u2();
+  const t = st.Y.map(y => dot(u, y));
+  const varu = quad(st.C, u), sig = Math.sqrt(varu);
+  const P = V.P, M = P(mu);
+  const upx = [u[0], -u[1]];            // u in pixel orientation
+  const npx = [-upx[1], upx[0]];         // normal in pixel orientation
+
+  // unit grid
+  ctx.save(); ctx.font = `11px ${SF}`; ctx.fillStyle = COL.muted;
+  for (let gx = Math.ceil(V.x0); gx <= V.x1; gx++) {
+    const px = P([gx, 0])[0]; seg(ctx, px, 0, px, h, COL.grid, 1);
+    ctx.textAlign = 'center'; ctx.fillText(gx, px, h - 5);
+  }
+  for (let gy = Math.ceil(V.y0); gy <= V.y1; gy++) {
+    const py = P([0, gy])[1]; seg(ctx, 0, py, w, py, COL.grid, 1);
+    ctx.textAlign = 'left'; ctx.fillText(gy, 5, py - 3);
+  }
+  ctx.restore();
+
+  // principal components + 1-sigma ellipse
+  if (S2.pc) {
+    const [v1, v2] = st.V, [l1, l2] = st.lam;
+    ctx.save(); ctx.beginPath();
+    for (let k = 0; k <= 120; k++) {
+      const a = k / 120 * 2 * Math.PI;
+      const q = [mu[0] + Math.sqrt(l1) * Math.cos(a) * v1[0] + Math.sqrt(l2) * Math.sin(a) * v2[0],
+                 mu[1] + Math.sqrt(l1) * Math.cos(a) * v1[1] + Math.sqrt(l2) * Math.sin(a) * v2[1]];
+      const p = P(q); k ? ctx.lineTo(...p) : ctx.moveTo(...p);
+    }
+    ctx.closePath();
+    ctx.fillStyle = COL.grid; ctx.fill();
+    ctx.setLineDash([4, 3]); ctx.strokeStyle = COL.struct; ctx.lineWidth = 1.2; ctx.stroke();
+    ctx.restore();
+  }
+
+  // u-axis through the mean
+  const L = 20;
+  seg(ctx, ...P([mu[0] - L * u[0], mu[1] - L * u[1]]), ...P([mu[0] + L * u[0], mu[1] + L * u[1]]), COL.orange, 1.2, [6, 5]);
+
+  // projection lines + feet
+  const feet = t.map(ti => P([mu[0] + ti * u[0], mu[1] + ti * u[1]]));
+  const pts = S2.X.map(P);
+  if (S2.lines) {
+    pts.forEach((p, i) => seg(ctx, p[0], p[1], feet[i][0], feet[i][1], COL.projline, 1));
+    feet.forEach(f => disc(ctx, f[0], f[1], 2.3, COL.foot));
+  }
+
+  // +/- sigma marks on the axis
+  if (S2.show.sig) {
+    for (const sg of [-1, 1]) {
+      const c = P([mu[0] + sg * sig * u[0], mu[1] + sg * sig * u[1]]);
+      seg(ctx, c[0] - npx[0] * 7, c[1] - npx[1] * 7, c[0] + npx[0] * 7, c[1] + npx[1] * 7, COL.orange, 2);
+    }
+  }
+
+  if (S2.pc) {
+    const cols = [COL.orange, COL.green];
+    st.V.forEach((v, k) => {
+      const tip = P([mu[0] + v[0], mu[1] + v[1]]);
+      ctx.save(); ctx.globalAlpha = 0.4; arrow(ctx, M[0], M[1], tip[0], tip[1], cols[k], 6, 16); ctx.restore();
+      const d = [v[0], -v[1]];
+      drawMath(ctx, LBL.v(k + 1), tip[0] + d[0] * 16, tip[1] + d[1] * 16 + 6, { size: 17, color: cols[k], align: 'center' });
+    });
+  }
+
+  // data points
+  pts.forEach(p => disc(ctx, p[0], p[1], 3.4, COL.pt));
+  if (S2.hover != null && S2.hover !== S2.sel) ring(ctx, pts[S2.hover][0], pts[S2.hover][1], 6.5, COL.muted, 1.5);
+
+  // selected point: centered vector, projection, brace
+  let side = 1, sgnT = 1;
+  if (S2.sel != null) {
+    sgnT = t[S2.sel] < 0 ? -1 : 1;
+    const i = S2.sel, Xp = pts[i], F = feet[i], ti = t[i];
+    side = Math.sign(npx[0] * (Xp[0] - M[0]) + npx[1] * (Xp[1] - M[1])) || 1;
+    arrow(ctx, M[0], M[1], Xp[0], Xp[1], COL.struct, 2, 10);
+    seg(ctx, Xp[0], Xp[1], F[0], F[1], COL.ink, 1.2, [2, 3]);
+    disc(ctx, F[0], F[1], 3.2, COL.ink);
+    disc(ctx, Xp[0], Xp[1], 4.4, COL.struct);
+    // brace on the side away from x_i
+    const b = ti >= 0
+      ? brace(ctx, M[0], M[1], F[0], F[1], 14 * -side, 5, COL.ink)
+      : brace(ctx, F[0], F[1], M[0], M[1], 14 * -side, 5, COL.ink);
+    if (b) {
+      const lx = b.tip[0] + b.nx * 14, ly = b.tip[1] + b.ny * 14;
+      const al = Math.abs(b.nx) > 0.5 ? (b.nx > 0 ? 'left' : 'right') : 'center';
+      drawMath(ctx, LBL.proj.concat([' = ' + fmt(ti, 2)]), lx, ly + 5 + (b.ny > 0.5 ? 6 : 0), { size: 14.5, color: COL.ink, align: al });
+    }
+    drawMath(ctx, LBL.xi, Xp[0] + 8, Xp[1] - 9, { size: 17, color: COL.struct });
+    // label the centered vector, on the side away from the projection
+    const vx = Xp[0] - M[0], vy = Xp[1] - M[1], vl = Math.hypot(vx, vy);
+    if (vl > 70) {
+      let nx = -vy / vl, ny = vx / vl;
+      if (nx * (F[0] - M[0]) + ny * (F[1] - M[1]) > 0) { nx = -nx; ny = -ny; }
+      const mx = M[0] + vx * 0.55 + nx * 16, my = M[1] + vy * 0.55 + ny * 16;
+      drawMath(ctx, LBL.xmu, mx, my + 5, { size: 14.5, color: COL.struct, align: Math.abs(nx) > 0.4 ? (nx > 0 ? 'left' : 'right') : 'center' });
+    }
+  }
+
+  // mean
+  disc(ctx, M[0], M[1], 4.8, COL.red);
+  {
+    const d = sgnT > 0 ? norm([-upx[0] - npx[0] * side, -upx[1] - npx[1] * side])
+                       : norm([upx[0] + npx[0] * side, upx[1] + npx[1] * side]);
+    drawMath(ctx, LBL.mu, M[0] + d[0] * 17, M[1] + d[1] * 17 + 5, { size: 17, color: COL.red, align: 'center' });
+  }
+
+  // u (unit vector) + drag handle
+  const T = P([mu[0] + u[0], mu[1] + u[1]]);
+  arrow(ctx, M[0], M[1], T[0], T[1], COL.orange, 2.8, 12);
+  ctx.save(); ctx.globalAlpha = 0.18; disc(ctx, T[0], T[1], 9, COL.orange); ctx.restore();
+  ring(ctx, T[0], T[1], 9, COL.orange, 1.3);
+  drawMath(ctx, LBL.u, T[0] - npx[0] * 16 * side + upx[0] * 6, T[1] - npx[1] * 16 * side + upx[1] * 6 + 5, { size: 18, color: COL.orange, align: 'center' });
+  S2.tip = T; S2.M = M;
+
+  // lower panel
+  drawProj(pj2, { t, v: varu, lamMin: st.lam[1], T: Math.max(st.R * 1.02, 1.15), scale: V.s,
+    sel: S2.sel, hover: S2.hover, show: S2.show });
+
+  drawCurve2(varu);
+
+  // readouts
+  $('u2').textContent = `(${fmt(u[0])}, ${fmt(u[1])})`;
+  const deg = S2.theta / DEG;
+  $('theta2').value = deg.toFixed(1);
+  $('theta2-out').textContent = `${fmt(deg, 1)}°`;
+  $('var2').textContent = fmt(varu, 3);
+  $('sd2').textContent = fmt(sig, 3);
+}
+
+function drawCurve2(varu) {
+  const { ctx, w, h } = prep(curve2);
+  const st = S2.st, [l1, l2] = st.lam;
+  const padL = 30, padR = 10, padT = 10, padB = 20;
+  const ymax = l1 * 1.12;
+  const X = th => padL + (w - padL - padR) * th / 180;
+  const Y = v => padT + (h - padT - padB) * (1 - v / ymax);
+  curve2._X = X; curve2._pad = [padL, padR];
+  ctx.save(); ctx.font = `11px ${SF}`; ctx.fillStyle = COL.muted; ctx.textAlign = 'center';
+  for (const a of [0, 45, 90, 135, 180]) { seg(ctx, X(a), padT, X(a), h - padB, COL.grid, 1); ctx.fillText(a + '°', X(a), h - 6); }
+  ctx.restore();
+  seg(ctx, padL, Y(0), w - padR, Y(0), COL.rule, 1);
+  seg(ctx, padL, Y(l1), w - padR, Y(l1), COL.orange, 1, [3, 3]);
+  seg(ctx, padL, Y(l2), w - padR, Y(l2), COL.green, 1, [3, 3]);
+  const gapL = Math.max(0, 15 - (Y(l2) - Y(l1))) / 2;   // keep the two labels from overlapping
+  drawMath(ctx, LBL.lam(1), padL - 5, Y(l1) + 5 - gapL, { size: 14, color: COL.orange, align: 'right', halo: false });
+  drawMath(ctx, LBL.lam(2), padL - 5, Y(l2) + 5 + gapL, { size: 14, color: COL.green, align: 'right', halo: false });
+  ctx.save(); ctx.beginPath();
+  for (let k = 0; k <= 180; k++) {
+    const v = quad(st.C, [Math.cos(k * DEG), Math.sin(k * DEG)]);
+    k ? ctx.lineTo(X(k), Y(v)) : ctx.moveTo(X(k), Y(v));
+  }
+  ctx.strokeStyle = COL.orange; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
+  const th = ((S2.theta / DEG) % 180 + 180) % 180;
+  seg(ctx, X(th), Y(0), X(th), Y(varu), COL.orange, 1, [2, 2]);
+  disc(ctx, X(th), Y(varu), 4.5, COL.orange);
+  ring(ctx, X(th), Y(varu), 4.5, COL.plot, 1.5);
+}
+
+let pend2 = false;
+function req2() { if (!pend2) { pend2 = true; requestAnimationFrame(() => { pend2 = false; draw2(); }); } }
+
+function setTheta2(th) { S2.theta = Math.atan2(Math.sin(th), Math.cos(th)); req2(); }
+function aimAt2(x, y) {
+  const q = S2.view.inv(x, y), mu = S2.st.mu;
+  if (Math.hypot(q[0] - mu[0], q[1] - mu[1]) > 1e-6) setTheta2(Math.atan2(q[1] - mu[1], q[0] - mu[0]));
+}
+function stopSpin2() { S2.spin = false; $('spin2').setAttribute('aria-pressed', 'false'); }
+
+cv2.addEventListener('pointerdown', e => {
+  const [x, y] = ptr(cv2, e);
+  if (S2.tip && Math.hypot(x - S2.tip[0], y - S2.tip[1]) <= 16) {
+    S2.drag = true;
+  } else {
+    const i = nearest(S2.X.map(S2.view.P), x, y, 7);
+    if (i != null) { S2.sel = S2.sel === i ? null : i; req2(); return; }
+    S2.drag = true; aimAt2(x, y);
+  }
+  stopSpin2();
+  cv2.setPointerCapture(e.pointerId);
+  cv2.style.cursor = 'grabbing';
+});
+cv2.addEventListener('pointermove', e => {
+  const [x, y] = ptr(cv2, e);
+  if (S2.drag) { aimAt2(x, y); return; }
+  const onTip = S2.tip && Math.hypot(x - S2.tip[0], y - S2.tip[1]) <= 16;
+  const i = onTip ? null : nearest(S2.X.map(S2.view.P), x, y, 8);
+  cv2.style.cursor = onTip ? 'grab' : i != null ? 'pointer' : 'crosshair';
+  if (i !== S2.hover) { S2.hover = i; req2(); }
+});
+const end2 = () => { S2.drag = false; cv2.style.cursor = 'crosshair'; };
+cv2.addEventListener('pointerup', end2);
+cv2.addEventListener('pointercancel', end2);
+cv2.addEventListener('pointerleave', () => { if (!S2.drag && S2.hover != null) { S2.hover = null; req2(); } });
+
+pj2.addEventListener('pointermove', e => {
+  const [x, y] = ptr(pj2, e); const i = nearest(pj2._pos || [], x, y, 10);
+  pj2.style.cursor = i != null ? 'pointer' : 'default';
+  if (i !== S2.hover) { S2.hover = i; req2(); }
+});
+pj2.addEventListener('pointerleave', () => { if (S2.hover != null) { S2.hover = null; req2(); } });
+pj2.addEventListener('click', e => {
+  const [x, y] = ptr(pj2, e); const i = nearest(pj2._pos || [], x, y, 10);
+  if (i != null) { S2.sel = S2.sel === i ? null : i; req2(); }
+});
+
+function curveAim(e) {
+  const [x] = ptr(curve2, e), [pl, pr] = curve2._pad;
+  const th = clamp((x - pl) / (curve2.clientWidth - pl - pr), 0, 1) * 180;
+  stopSpin2(); setTheta2(th * DEG);
+}
+curve2.addEventListener('pointerdown', e => { curve2.setPointerCapture(e.pointerId); curve2._drag = true; curveAim(e); });
+curve2.addEventListener('pointermove', e => { if (curve2._drag) curveAim(e); });
+curve2.addEventListener('pointerup', () => { curve2._drag = false; });
+
+$('theta2').addEventListener('input', e => { stopSpin2(); setTheta2(+e.target.value * DEG); });
+$('aim2-1').addEventListener('click', () => { stopSpin2(); const v = S2.st.V[0]; setTheta2(Math.atan2(v[1], v[0])); });
+$('aim2-2').addEventListener('click', () => { stopSpin2(); const v = S2.st.V[1]; setTheta2(Math.atan2(v[1], v[0])); });
+['kde', 'hist', 'gauss', 'sig'].forEach(k => {
+  $(k + '2').addEventListener('change', e => { S2.show[k] = e.target.checked; req2(); });
+  $(k + '3').addEventListener('change', e => { S3.show[k] = e.target.checked; req3(); });
+});
+$('lines2').addEventListener('change', e => { S2.lines = e.target.checked; req2(); });
+$('pc2').addEventListener('change', e => { S2.pc = e.target.checked; req2(); });
+$('data2').addEventListener('change', e => load2(e.target.value));
+$('spin2').addEventListener('click', () => {
+  S2.spin = !S2.spin; $('spin2').setAttribute('aria-pressed', String(S2.spin));
+  if (S2.spin) {
+    let last = performance.now();
+    const step = now => {
+      if (!S2.spin) return;
+      S2.theta += (now - last) / 1000 * 30 * DEG; last = now;
+      setTheta2(S2.theta); requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+});
+
+/* ======================================================================
+   3D demo
+   ====================================================================== */
+function rot(a, b, c) {
+  const [ca, sa, cb, sb, cc, sc] = [Math.cos(a * DEG), Math.sin(a * DEG), Math.cos(b * DEG), Math.sin(b * DEG), Math.cos(c * DEG), Math.sin(c * DEG)];
+  const Rz = [[ca, -sa, 0], [sa, ca, 0], [0, 0, 1]], Ry = [[cb, 0, sb], [0, 1, 0], [-sb, 0, cb]], Rx = [[1, 0, 0], [0, cc, -sc], [0, sc, cc]];
+  const mm = (A, B) => A.map((r, i) => B[0].map((_, j) => r.reduce((s, _, k) => s + A[i][k] * B[k][j], 0)));
+  return mm(mm(Rz, Ry), Rx);
+}
+function makeData3(kind) {
+  const lam = { cigar: [1.0, 0.12, 0.035], pancake: [0.9, 0.7, 0.025], round: [0.42, 0.34, 0.27] }[kind];
+  const r = mulberry32({ cigar: 3, pancake: 5, round: 9 }[kind]);
+  const Q = rot(35, -25, 20), mu = [1.2, 0.8, 1.5];
+  return Array.from({ length: 150 }, () => {
+    const z = lam.map(l => Math.sqrt(l) * gauss(r));
+    return mu.map((c, i) => c + Q[i][0] * z[0] + Q[i][1] * z[1] + Q[i][2] * z[2]);
+  });
+}
+
+const CAM0 = { yaw: -32 * DEG, pitch: 20 * DEG };
+const S3 = { yaw: CAM0.yaw, pitch: CAM0.pitch, u: norm([0.25, -0.55, 0.8]), sel: null, hover: null,
+  pc: false, lines: false, sphere: true, spin: false, mode: null,
+  show: { kde: true, hist: false, gauss: false, sig: true } };
+const cv3 = $('cv3'), pj3 = $('pj3'), sph3 = $('sph3'), meter3 = $('meter3');
+
+/* camera: world (z up) -> (X right, U up, D depth; D < 0 is toward the viewer) */
+function toCam(p) {
+  const cy = Math.cos(S3.yaw), sy = Math.sin(S3.yaw), cp = Math.cos(S3.pitch), sp = Math.sin(S3.pitch);
+  const x1 = cy * p[0] + sy * p[1], y1 = -sy * p[0] + cy * p[1], z1 = p[2];
+  return [x1, sp * y1 + cp * z1, cp * y1 - sp * z1];
+}
+function fromCam(X, U, D) {
+  const cy = Math.cos(S3.yaw), sy = Math.sin(S3.yaw), cp = Math.cos(S3.pitch), sp = Math.sin(S3.pitch);
+  const y1 = cp * D + sp * U, z1 = -sp * D + cp * U;
+  return [cy * X - sy * y1, sy * X + cy * y1, z1];
+}
+
+function load3(kind) {
+  S3.X = makeData3(kind);
+  S3.st = stats(S3.X);
+  S3.sel = null; S3.hover = null; S3.sphImg = null;
+  fillMatrix($('C3'), S3.st.C);
+  S3.st.lam.forEach((l, k) => { $('l3-' + (k + 1)).textContent = fmt(l, 3); });
+  req3();
+}
+
+function view3(w, h) {
+  const r = S3.st.Y.map(y => Math.hypot(...y)).sort((p, q) => p - q);
+  const s = Math.min(w, h) / 2 / (r[Math.floor(r.length * 0.97)] * 1.12);
+  const cx = w / 2, cy = h / 2;
+  return { s, cx, cy, P: p => { const c = toCam(p); return [cx + s * c[0], cy - s * c[1], c[2]]; } };
+}
+
+function draw3() {
+  const { ctx, w, h } = prep(cv3);
+  const st = S3.st, u = S3.u, V = view3(w, h); S3.view = V;
+  const P = V.P, s = V.s, M = [V.cx, V.cy];
+  const t = st.Y.map(y => dot(u, y));
+  const varu = quad(st.C, u), sig = Math.sqrt(varu);
+  const pts = st.Y.map(P);
+  const R = st.R;
+
+  // unit sphere: silhouette + equator
+  if (S3.sphere) {
+    ctx.save(); ctx.globalAlpha = 0.9;
+    ring(ctx, M[0], M[1], s, COL.rule, 1);
+    ctx.restore();
+    for (let k = 0; k < 72; k++) {
+      const a0 = k / 72 * 2 * Math.PI, a1 = (k + 1) / 72 * 2 * Math.PI;
+      const p0 = P([Math.cos(a0), Math.sin(a0), 0]), p1 = P([Math.cos(a1), Math.sin(a1), 0]);
+      const back = p0[2] + p1[2] > 0;
+      if (back && k % 2) continue;
+      seg(ctx, p0[0], p0[1], p1[0], p1[1], COL.rule, back ? 0.8 : 1);
+    }
+  }
+
+  // projection lines + feet
+  const feet = t.map(ti => P([ti * u[0], ti * u[1], ti * u[2]]));
+  if (S3.lines) {
+    pts.forEach((p, i) => seg(ctx, p[0], p[1], feet[i][0], feet[i][1], COL.projline, 0.8));
+    feet.forEach(f => disc(ctx, f[0], f[1], 1.8, COL.foot));
+  }
+
+  const order = pts.map((p, i) => i).sort((a, b) => pts[b][2] - pts[a][2]);
+  const drawPt = i => {
+    const d = pts[i][2] / R;            // -1 (near) .. 1 (far)
+    ctx.save(); ctx.globalAlpha = clamp(0.8 - 0.4 * d, 0.3, 1);
+    disc(ctx, pts[i][0], pts[i][1], 3.1 - 0.9 * d, COL.pt); ctx.restore();
+  };
+  order.filter(i => pts[i][2] > 0).forEach(drawPt);
+
+  // u-axis
+  const A0 = P([-R * 1.1 * u[0], -R * 1.1 * u[1], -R * 1.1 * u[2]]), A1 = P([R * 1.1 * u[0], R * 1.1 * u[1], R * 1.1 * u[2]]);
+  seg(ctx, A0[0], A0[1], A1[0], A1[1], COL.orange, 1.2, [6, 5]);
+  if (S3.show.sig) {
+    const up = norm([A1[0] - A0[0], A1[1] - A0[1]]), np = [-up[1], up[0]];
+    for (const sg of [-1, 1]) {
+      const c = P([sg * sig * u[0], sg * sig * u[1], sg * sig * u[2]]);
+      seg(ctx, c[0] - np[0] * 6, c[1] - np[1] * 6, c[0] + np[0] * 6, c[1] + np[1] * 6, COL.orange, 2);
+    }
+  }
+
+  // principal components
+  if (S3.pc) {
+    const cols = [COL.orange, COL.green, COL.purple];
+    st.V.forEach((v, k) => {
+      const tp = P(v);
+      ctx.save(); ctx.globalAlpha = 0.45; arrow(ctx, M[0], M[1], tp[0], tp[1], cols[k], 5, 14); ctx.restore();
+      const d = norm([tp[0] - M[0], tp[1] - M[1]]);
+      drawMath(ctx, LBL.v(k + 1), tp[0] + d[0] * 15, tp[1] + d[1] * 15 + 6, { size: 16, color: cols[k], align: 'center' });
+    });
+  }
+
+  // selected point
+  if (S3.sel != null) {
+    const i = S3.sel, Xp = pts[i], F = feet[i];
+    arrow(ctx, M[0], M[1], Xp[0], Xp[1], COL.struct, 1.8, 9);
+    seg(ctx, Xp[0], Xp[1], F[0], F[1], COL.ink, 1.2, [2, 3]);
+    disc(ctx, F[0], F[1], 3, COL.ink);
+  }
+
+  disc(ctx, M[0], M[1], 4.8, COL.red);
+
+  order.filter(i => pts[i][2] <= 0).forEach(drawPt);
+
+  if (S3.sel != null) {
+    const Xp = pts[S3.sel];
+    disc(ctx, Xp[0], Xp[1], 4.4, COL.struct);
+    drawMath(ctx, LBL.xi, Xp[0] + 8, Xp[1] - 9, { size: 17, color: COL.struct });
+  }
+  if (S3.hover != null && S3.hover !== S3.sel) ring(ctx, pts[S3.hover][0], pts[S3.hover][1], 6.5, COL.muted, 1.5);
+
+  // u arrow + handle (always on top)
+  const T = P(u);
+  arrow(ctx, M[0], M[1], T[0], T[1], COL.orange, 2.8, 12);
+  ctx.save(); ctx.globalAlpha = T[2] > 0 ? 0.08 : 0.2; disc(ctx, T[0], T[1], 9, COL.orange); ctx.restore();
+  ctx.save(); if (T[2] > 0) ctx.setLineDash([2, 2]); ring(ctx, T[0], T[1], 9, COL.orange, 1.3); ctx.restore();
+  {
+    const d = Math.hypot(T[0] - M[0], T[1] - M[1]) > 4 ? norm([T[0] - M[0], T[1] - M[1]]) : [0.7, -0.7];
+    drawMath(ctx, LBL.u, T[0] + d[0] * 18, T[1] + d[1] * 18 + 6, { size: 18, color: COL.orange, align: 'center' });
+    const dm = [-d[0] * 0.6 - d[1] * 0.8, -d[1] * 0.6 + d[0] * 0.8];
+    drawMath(ctx, LBL.mu, M[0] + dm[0] * 18, M[1] + dm[1] * 18 + 6, { size: 17, color: COL.red, align: 'center' });
+  }
+  S3.tip = T;
+
+  // axis triad
+  {
+    const o = [34, h - 30], axes = [[1, 0, 0], [0, 1, 0], [0, 0, 1]].map((e, k) => ({ k, c: toCam(e) }));
+    axes.sort((a, b) => b.c[2] - a.c[2]).forEach(({ k, c }) => {
+      const e = [o[0] + 22 * c[0], o[1] - 22 * c[1]];
+      arrow(ctx, o[0], o[1], e[0], e[1], COL.muted, 1.2, 6);
+      const d = Math.hypot(c[0], c[1]) > 0.1 ? norm([c[0], -c[1]]) : [0.7, -0.7];
+      drawMath(ctx, [{ i: 'x', sub: String(k + 1), subUp: true }], e[0] + d[0] * 9, e[1] + d[1] * 9 + 5, { size: 13, color: COL.muted, align: 'center' });
+    });
+  }
+
+  // lower panel
+  drawProj(pj3, { t, v: varu, lamMin: st.lam[2], T: Math.max(R * 1.02, 1.15), scale: null,
+    sel: S3.sel, hover: S3.hover, show: S3.show });
+
+  drawSphere3();
+  drawMeter3(varu);
+
+  $('u3').textContent = `(${fmt(u[0], 2)}, ${fmt(u[1], 2)}, ${fmt(u[2], 2)})`;
+  $('var3').textContent = fmt(varu, 3);
+  $('sd3').textContent = fmt(sig, 3);
+  const az = Math.atan2(u[1], u[0]) / DEG, el = Math.asin(clamp(u[2], -1, 1)) / DEG;
+  if (S3.mode !== 'slider') { $('az3').value = az.toFixed(1); $('el3').value = el.toFixed(1); }
+  $('az3-out').textContent = `${fmt(az, 1)}°`;
+  $('el3-out').textContent = `${fmt(el, 1)}°`;
+}
+
+/* sphere colored by var(u) = u^T C u, in camera orientation */
+function renderSphereImage(N) {
+  const off = S3.sphOff || (S3.sphOff = document.createElement('canvas'));
+  off.width = N; off.height = N;
+  const octx = off.getContext('2d'), img = octx.createImageData(N, N), data = img.data;
+  const { C, lam } = S3.st, lo = lam[2], hi = lam[0], c = N / 2, Rr = N / 2 - 1.5;
+  for (let py = 0; py < N; py++) for (let px = 0; px < N; px++) {
+    const X = (px + 0.5 - c) / Rr, U = -(py + 0.5 - c) / Rr, r2 = X * X + U * U;
+    const k = 4 * (py * N + px);
+    if (r2 > 1.0) { data[k + 3] = 0; continue; }
+    const r = Math.sqrt(r2), D = -Math.sqrt(Math.max(0, 1 - r2));
+    const f = (quad(C, fromCam(X, U, D)) - lo) / (hi - lo || 1);
+    let [R, G, B] = cmap(f);
+    const lv = f * 8 - 0.5, fr = lv - Math.floor(lv);
+    const shade = (0.8 + 0.2 * Math.sqrt(1 - r2)) * (Math.min(fr, 1 - fr) < 0.05 ? 0.82 : 1);
+    data[k] = R * shade; data[k + 1] = G * shade; data[k + 2] = B * shade;
+    data[k + 3] = 255 * clamp((1 - r) * Rr, 0, 1);
+  }
+  octx.putImageData(img, 0, 0);
+  S3.sphImg = { N, yaw: S3.yaw, pitch: S3.pitch };
+}
+function drawSphere3() {
+  const d = dpr(), size = sph3.clientWidth, N = Math.round(size * d);
+  const I = S3.sphImg;
+  if (!I || I.N !== N || I.yaw !== S3.yaw || I.pitch !== S3.pitch) renderSphereImage(N);
+  const { ctx, w } = prep(sph3);
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(S3.sphOff, 0, 0); ctx.restore();
+  const c = w / 2, Rr = w / 2 - 1.5 / d;
+  ring(ctx, c, c, Rr, COL.rule, 1);
+  const mark = (v, color, lbl, big) => {
+    let q = toCam(v); if (q[2] > 0) q = q.map(x => -x);       // show whichever of ±v faces us
+    const x = c + Rr * q[0], y = c - Rr * q[1];
+    if (big) { disc(ctx, x, y, 4.5, color); ring(ctx, x, y, 4.5, COL.plot, 1.5); }
+    else { disc(ctx, x, y, 3, color); ring(ctx, x, y, 3, COL.plot, 1); }
+    if (lbl) drawMath(ctx, lbl, x + 6, y - 5, { size: 12, color });
+  };
+  if (S3.pc) [COL.orange, COL.green, COL.purple].forEach((col, k) => mark(S3.st.V[k], col, LBL.v(k + 1), false));
+  mark(S3.u, COL.orange, null, true);
+}
+
+function drawMeter3(varu) {
+  const { ctx, w, h } = prep(meter3);
+  const [l1, l2, l3] = S3.st.lam, padL = 14, padR = 16;
+  const X = v => padL + (w - padL - padR) * v / (l1 * 1.04);
+  const y = 34;
+  seg(ctx, X(0), y, w - padR, y, COL.rule, 1);
+  seg(ctx, X(0), y - 4, X(0), y + 4, COL.muted, 1);
+  ctx.save(); ctx.globalAlpha = 0.5; seg(ctx, X(l3), y, X(l1), y, COL.orange, 5); ctx.restore();
+  // eigenvalue labels, nudged apart when the eigenvalues are close
+  const cols = [COL.orange, COL.green, COL.purple], xs = [X(l1), X(l2), X(l3)], lx = xs.slice(), gap = 22;
+  for (let k = 1; k < 3; k++) lx[k] = Math.min(lx[k], lx[k - 1] - gap);
+  if (lx[2] < padL + 4) { lx[2] = padL + 4; for (let k = 1; k >= 0; k--) lx[k] = Math.max(lx[k], lx[k + 1] + gap); }
+  xs.forEach((x, k) => {
+    seg(ctx, x, y - 6, x, y + 6, cols[k], 1.5);
+    if (Math.abs(lx[k] - x) > 1) seg(ctx, x, y + 6, lx[k], y + 12, cols[k], 0.8);
+    drawMath(ctx, LBL.lam(k + 1), lx[k], y + 25, { size: 14, color: cols[k], align: 'center', halo: false });
+  });
+  const x = X(varu);
+  ctx.fillStyle = COL.ink; ctx.beginPath(); ctx.moveTo(x, y - 3); ctx.lineTo(x - 5, y - 12); ctx.lineTo(x + 5, y - 12); ctx.closePath(); ctx.fill();
+  drawMath(ctx, ['var(', V_('u'), ')'], clamp(x, 26, w - 26), y - 16, { size: 13, align: 'center', halo: false });
+}
+
+let pend3 = false;
+function req3() { if (!pend3) { pend3 = true; requestAnimationFrame(() => { pend3 = false; draw3(); }); } }
+function setU3(v) { S3.u = norm(v); req3(); }
+function stopSpin3() { S3.spin = false; $('spin3').setAttribute('aria-pressed', 'false'); }
+
+cv3.addEventListener('pointerdown', e => {
+  const [x, y] = ptr(cv3, e);
+  S3.down = [x, y]; S3.moved = false;
+  if (S3.tip && Math.hypot(x - S3.tip[0], y - S3.tip[1]) <= 16) {
+    S3.mode = 'u'; S3.hemi = S3.tip[2] > 1e-6 ? 1 : -1;
+  } else {
+    S3.mode = 'orbit'; S3.last = [x, y];
+  }
+  cv3.setPointerCapture(e.pointerId);
+  cv3.style.cursor = 'grabbing';
+});
+cv3.addEventListener('pointermove', e => {
+  const [x, y] = ptr(cv3, e);
+  if (S3.mode === 'u') {
+    const V = S3.view; let X = (x - V.cx) / V.s, U = -(y - V.cy) / V.s, r = Math.hypot(X, U), D;
+    if (r >= 1) { X /= r; U /= r; D = 0; } else D = S3.hemi * Math.sqrt(1 - r * r);
+    setU3(fromCam(X, U, D));
+    return;
+  }
+  if (S3.mode === 'orbit') {
+    const dx = x - S3.last[0], dy = y - S3.last[1]; S3.last = [x, y];
+    if (Math.hypot(x - S3.down[0], y - S3.down[1]) > 3) S3.moved = true;
+    if (S3.moved) {
+      stopSpin3();
+      S3.yaw -= dx * 0.008;
+      S3.pitch = clamp(S3.pitch + dy * 0.008, -88 * DEG, 88 * DEG);
+      req3();
+    }
+    return;
+  }
+  const onTip = S3.tip && Math.hypot(x - S3.tip[0], y - S3.tip[1]) <= 16;
+  const i = onTip ? null : nearest(S3.st.Y.map(S3.view.P), x, y, 7);
+  cv3.style.cursor = onTip ? 'grab' : i != null ? 'pointer' : 'move';
+  if (i !== S3.hover) { S3.hover = i; req3(); }
+});
+function end3(e) {
+  if (S3.mode === 'orbit' && !S3.moved && e.type === 'pointerup') {
+    const [x, y] = ptr(cv3, e);
+    const i = nearest(S3.st.Y.map(S3.view.P), x, y, 7);
+    if (i != null) { S3.sel = S3.sel === i ? null : i; req3(); }
+  }
+  S3.mode = null; cv3.style.cursor = 'move';
+}
+cv3.addEventListener('pointerup', end3);
+cv3.addEventListener('pointercancel', end3);
+cv3.addEventListener('pointerleave', () => { if (!S3.mode && S3.hover != null) { S3.hover = null; req3(); } });
+
+pj3.addEventListener('pointermove', e => {
+  const [x, y] = ptr(pj3, e); const i = nearest(pj3._pos || [], x, y, 10);
+  pj3.style.cursor = i != null ? 'pointer' : 'default';
+  if (i !== S3.hover) { S3.hover = i; req3(); }
+});
+pj3.addEventListener('pointerleave', () => { if (S3.hover != null) { S3.hover = null; req3(); } });
+pj3.addEventListener('click', e => {
+  const [x, y] = ptr(pj3, e); const i = nearest(pj3._pos || [], x, y, 10);
+  if (i != null) { S3.sel = S3.sel === i ? null : i; req3(); }
+});
+
+function sliderAim() {
+  const az = +$('az3').value * DEG, el = +$('el3').value * DEG;
+  S3.mode = 'slider';
+  setU3([Math.cos(el) * Math.cos(az), Math.cos(el) * Math.sin(az), Math.sin(el)]);
+  requestAnimationFrame(() => { if (S3.mode === 'slider') S3.mode = null; });
+}
+$('az3').addEventListener('input', sliderAim);
+$('el3').addEventListener('input', sliderAim);
+[1, 2, 3].forEach(k => $('aim3-' + k).addEventListener('click', () => setU3(S3.st.V[k - 1])));
+$('sphere3').addEventListener('change', e => { S3.sphere = e.target.checked; req3(); });
+$('lines3').addEventListener('change', e => { S3.lines = e.target.checked; req3(); });
+$('pc3').addEventListener('change', e => { S3.pc = e.target.checked; req3(); });
+$('data3').addEventListener('change', e => load3(e.target.value));
+$('reset3').addEventListener('click', () => { stopSpin3(); S3.yaw = CAM0.yaw; S3.pitch = CAM0.pitch; req3(); });
+$('spin3').addEventListener('click', () => {
+  S3.spin = !S3.spin; $('spin3').setAttribute('aria-pressed', String(S3.spin));
+  if (S3.spin) {
+    let last = performance.now();
+    const step = now => {
+      if (!S3.spin) return;
+      S3.yaw += (now - last) / 1000 * 0.35; last = now;
+      draw3(); requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+});
+
+/* ================= boot ================= */
+readColors();
+load2('slide');
+load3('cigar');
+
+const redrawAll = () => { readColors(); S3.sphImg = null; req2(); req3(); };
+try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', redrawAll); } catch (e) { /* older browsers */ }
+new MutationObserver(redrawAll).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class', 'style'] });
+if (window.ResizeObserver) {
+  const ro = new ResizeObserver(() => { req2(); req3(); });
+  [cv2, pj2, curve2, cv3, pj3, sph3, meter3].forEach(c => ro.observe(c));
+} else window.addEventListener('resize', () => { req2(); req3(); });
+if (document.fonts && document.fonts.load) {
+  const glyphs = 'uvxμσλ0123456789=+−(),';
+  Promise.all([
+    document.fonts.load('italic 16px "STIX Two Text"', glyphs),
+    document.fonts.load('16px "STIX Two Text"', glyphs),
+    document.fonts.load('12px "Source Sans 3"')
+  ]).then(() => { req2(); req3(); }, () => {});
+}
+})();
+</script>
+
+</html>
